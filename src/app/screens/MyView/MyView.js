@@ -4,7 +4,7 @@ import { Content } from 'antd/lib/layout';
 const MyView = () => {
   return (
     <Content style={{ backgroundColor: '#fff', padding: '21px' }}>
-      <h1>My view</h1>
+      <h1>Ssss</h1>
     </Content>
   );
 };
