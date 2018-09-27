@@ -1,12 +1,11 @@
 import React from 'react';
-import ChangeLogContainer from './screens/ChangeLog/ChangeLogContainer';
+import DocsContainer from './screens/Docs/DocsContainer';
+import MyProjectsContainer from './screens/MyProjects/MyProjectsContainer';
 import MyViewContainer from './screens/MyView/MyViewContainer';
 import NotFound from './screens/NotFound/NotFound';
-import RepoContainer from './screens/Repo/RepoContainer';
 import ReportIssueContainer from './screens/ReportIssue/ReportIssueContainer';
-import RoadMapContainer from './screens/RoadMap/RoadMapContainer';
+import SummaryContainer from './screens/Summary/SummaryContainer';
 import ViewIssuesContainer from './screens/ViewIssues/ViewIssuesContainer';
-import WikiContainer from './screens/Wiki/WikiContainer';
 
 const AppRoutes = [
   {
@@ -20,24 +19,9 @@ const AppRoutes = [
     component: () => <MyViewContainer />
   },
   {
-    path: '/change-log',
+    path: '/my-projects',
     exact: false,
-    component: () => <ChangeLogContainer />
-  },
-  {
-    path: '/repo',
-    exact: false,
-    component: () => <RepoContainer />
-  },
-  {
-    path: '/report-issue',
-    exact: false,
-    component: () => <ReportIssueContainer />
-  },
-  {
-    path: '/road-map',
-    exact: false,
-    component: () => <RoadMapContainer />
+    component: () => <MyProjectsContainer />
   },
   {
     path: '/view-issues',
@@ -45,9 +29,19 @@ const AppRoutes = [
     component: () => <ViewIssuesContainer />
   },
   {
-    path: '/wiki',
+    path: '/report-issue',
     exact: false,
-    component: () => <WikiContainer />
+    component: () => <ReportIssueContainer />
+  },
+  {
+    path: '/summary',
+    exact: false,
+    component: () => <SummaryContainer />
+  },
+  {
+    path: '/docs',
+    exact: false,
+    component: () => <DocsContainer />
   },
   {
     path: '',

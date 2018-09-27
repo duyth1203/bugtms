@@ -1,5 +1,5 @@
 @import '~antd/dist/antd.css';
 
-.App > div:first-of-type {
-  height: 100vh;
+.app-container > div:first-of-type {
+  min-height: 100vh;
 }
