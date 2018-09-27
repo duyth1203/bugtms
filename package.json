@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "antd": "^3.9.2",
+    "moment": "^2.22.2",
     "react": "^16.5.2",
     "react-app-rewired": "^1.6.2",
     "react-dom": "^16.5.2",
@@ -12,9 +13,9 @@
     "react-scripts": "1.1.5"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test --env=jsdom",
-    "eject": "react-app-rewired eject"
+    "start": "PORT=3001 react-app-rewired start",
+    "build": "PORT=3001 react-app-rewired build",
+    "test": "PORT=3001 react-app-rewired test --env=jsdom",
+    "eject": "PORT=3001 react-app-rewired eject"
   }
 }

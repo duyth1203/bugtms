@@ -1,0 +1,13 @@
+.app-logo {
+  max-width: 200px;
+  padding: 13px;
+}
+
+.app-logo > img {
+  width: 100%;
+}
+
+.sider {
+  background-color: #f4f4f4;
+  border-right: 0.5px rgba(0, 0, 0, 0.18) solid;
+}

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 image: node:latest
 
 stages:
@@ -27,3 +28,4 @@ production:
     - dpl --provider=heroku --app=bugtms-test --api-key=$HEROKU_API_KEY
   only:
     - dev
+
