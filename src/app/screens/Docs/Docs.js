@@ -1,12 +1,12 @@
 import React from 'react';
 import { Content } from 'antd/lib/layout';
 
-const RoadMap = () => {
+const Docs = () => {
   return (
     <Content style={{ backgroundColor: '#fff', padding: '21px' }}>
-      <h1>Road map</h1>
+      <h1>Docs</h1>
     </Content>
   );
 };
 
-export default RoadMap;
+export default Docs;
