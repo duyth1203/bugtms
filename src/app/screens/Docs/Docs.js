@@ -1,11 +1,10 @@
-import React from 'react';
-import { Content } from 'antd/lib/layout';
+import React from "react";
 
 const Docs = () => {
   return (
-    <Content style={{ backgroundColor: '#fff', padding: '21px' }}>
+    <div className="app-content">
       <h1>Docs</h1>
-    </Content>
+    </div>
   );
 };
 
