@@ -1,5 +1,11 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 
 .app-container > div:first-of-type {
   min-height: 100vh;
+  min-width: 360px;
+}
+
+.app-content {
+  background-color: white;
+  padding: 31.5px;
 }

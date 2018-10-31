@@ -1,10 +1,9 @@
-import React from 'react';
-import { Content } from 'antd/lib/layout';
-import Button from 'antd/lib/button';
-import Input from 'antd/lib/input';
-import DatePicker from 'antd/lib/date-picker';
-import Form from 'antd/lib/form';
-import Select from 'antd/lib/select';
+import React from "react";
+import Button from "antd/lib/button";
+import Input from "antd/lib/input";
+import DatePicker from "antd/lib/date-picker";
+import Form from "antd/lib/form";
+import Select from "antd/lib/select";
 
 const FormItem = Form.Item,
   Option = Select.Option;
@@ -41,9 +40,9 @@ const ReportIssue = props => {
   const onDateChange = (date, dateStr) => {
     const e = {
       target: {
-        type: 'select',
-        name: 'updated',
-        value: dateStr.replace(/-/g, '') + '000000'
+        type: "select",
+        name: "updated",
+        value: dateStr.replace(/-/g, "") + "000000"
       }
     };
     props.onChange(e);
@@ -52,8 +51,8 @@ const ReportIssue = props => {
   const onCategoryChange = value => {
     const e = {
       target: {
-        type: 'select',
-        name: 'category',
+        type: "select",
+        name: "category",
         value
       }
     };
@@ -63,8 +62,8 @@ const ReportIssue = props => {
   const onStatusChange = value => {
     const e = {
       target: {
-        type: 'select',
-        name: 'status',
+        type: "select",
+        name: "status",
         value
       }
     };
@@ -72,7 +71,7 @@ const ReportIssue = props => {
   };
 
   return (
-    <Content style={{ backgroundColor: '#fff', padding: '21px' }}>
+    <div className="app-content">
       <h1>Report issue details</h1>
 
       <Form onSubmit={props.onSubmit}>
@@ -128,7 +127,7 @@ const ReportIssue = props => {
           </Button>
         </FormItem>
       </Form>
-    </Content>
+    </div>
   );
 };
 

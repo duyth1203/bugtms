@@ -17,5 +17,8 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-app-rewired eject"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0"
   }
 }

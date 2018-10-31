@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import Layout from 'antd/lib/layout';
-import AppFooter from './compontents/Footer/Footer';
-import AppHeaderContainer from './compontents/Header/HeaderContainer';
-import AppSider from './compontents/Sider/Sider';
+import React, { Component } from "react";
+import Layout, { Content } from "antd/lib/layout";
+import AppFooter from "./compontents/Footer/Footer";
+import AppHeaderContainer from "./compontents/Header/HeaderContainer";
+import AppSider from "./compontents/Sider/Sider";
 
 class MainLayout extends Component {
   constructor() {
@@ -28,10 +28,13 @@ class MainLayout extends Component {
           />
           <Layout>
             <AppHeaderContainer
+              siderExpand={this.state.siderExpand}
               onIssueSearch={this.handleIssueSearch}
               onSiderToggle={this.handleSiderToggle}
             />
-            {this.props.children}
+            <Content style={{ backgroundColor: "#fff", padding: "21px" }}>
+              {this.props.children}
+            </Content>
             <AppFooter />
           </Layout>
         </Layout>
