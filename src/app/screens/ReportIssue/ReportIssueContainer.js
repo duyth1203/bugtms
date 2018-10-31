@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import ReportIssue from './ReportIssue';
-import notification from 'antd/lib/notification';
-import moment from 'moment';
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import ReportIssue from "./ReportIssue";
+import notification from "antd/lib/notification";
+import moment from "moment";
 
 class ReportIssueContainer extends Component {
   constructor() {
     super();
     this.state = {
-      projectId: '',
-      bugNote: '',
-      attachment: '',
-      category: '',
-      status: '',
-      updated: '',
-      summary1: '',
-      showMessage: false,
-      messageType: 'info'
+      projectId: "",
+      bugNote: "",
+      attachment: "",
+      category: "General",
+      status: "Buggy",
+      updated: moment().format("YYYYMMDD") + "000000",
+      summary1: "",
+      showMessage: 0,
+      messageType: "info"
     };
   }
 
@@ -33,20 +33,12 @@ class ReportIssueContainer extends Component {
       summary1
     } = this.state;
 
-    // Process default value of selectors if not changed
-    category = category.length < 1 ? 'General' : category;
-    status = status.length < 1 ? 'Buggy' : status;
-    updated =
-      updated.length < 1
-        ? (updated = moment().format('YYYYMMDD') + '000000')
-        : updated;
-
-    fetch('http://localhost:3000/issues', {
+    fetch("http://localhost:3000/issues", {
+      method: "POST",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json"
       },
-      method: 'POST',
       body: JSON.stringify({
         projectId,
         bugNote,
@@ -58,40 +50,48 @@ class ReportIssueContainer extends Component {
       })
     }) // done, show result in message
       .then(data =>
-        this.setState({ messageType: 'success', showMessage: true })
+        this.setState({
+          messageType: "success",
+          showMessage: 1 - this.state.showMessage
+        })
       )
-      .catch(err => this.setState({ messageType: 'error', showMessage: true }));
+      .catch(err =>
+        this.setState({
+          messageType: "error",
+          showMessage: 1 - this.state.showMessage
+        })
+      );
   };
 
   handleChange = e => {
     const target = e.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
     this.setState({
       [name]: value
     });
   };
 
-  componentDidUpdate() {
-    this.state.showMessage &&
+  componentDidUpdate(prevProps, prevState) {
+    this.state.showMessage !== prevState.showMessage &&
       ReactDOM.render(
         notification[this.state.messageType]({
-          message: 'Notification',
+          message: this.state.messageType === "success" ? "Success" : "Error",
           description:
-            this.state.messageType === 'success'
-              ? 'Successfully reported issue'
-              : 'Sorry, failed reporting issue',
+            this.state.messageType === "success"
+              ? "Successfully reported issue."
+              : "Sorry, failed reporting issue.",
           duration: 2,
-          placement: 'topRight'
+          placement: "topRight"
         }),
-        document.querySelector('#notiWrapper')
+        document.querySelector("#postIssueResult")
       );
   }
 
   render() {
     return (
       <React.Fragment>
-        <span id="notiWrapper" />
+        <span id="postIssueResult" />
         <ReportIssue
           onSubmit={this.handleSubmit}
           onChange={this.handleChange}

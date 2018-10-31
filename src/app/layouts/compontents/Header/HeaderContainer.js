@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import Header from './Header';
+import React, { Component } from "react";
+import Header from "./Header";
 
 class AppHeaderContainer extends Component {
   onIssueSearch = query => {
     this.props.onIssueSearch(query);
   };
 
-  onSiderToggle = siderCollapsed => {
-    this.props.onSiderToggle(siderCollapsed);
+  onSiderToggle = () => {
+    this.props.onSiderToggle();
   };
 
   render() {
     return (
       <Header
-        siderCollapsed={this.props.siderCollapsed}
+        siderExpand={this.props.siderExpand}
         onIssueSearch={this.onIssueSearch}
         onSiderToggle={this.onSiderToggle}
       />
