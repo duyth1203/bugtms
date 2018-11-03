@@ -1,50 +1,56 @@
-import React from 'react';
-import DocsContainer from './screens/Docs/DocsContainer';
-import MyProjectsContainer from './screens/MyProjects/MyProjectsContainer';
-import MyViewContainer from './screens/MyView/MyViewContainer';
-import NotFound from './screens/NotFound/NotFound';
-import ReportIssueContainer from './screens/ReportIssue/ReportIssueContainer';
-import SummaryContainer from './screens/Summary/SummaryContainer';
-import ViewIssuesContainer from './screens/ViewIssues/ViewIssuesContainer';
+import React from "react";
+import DocsContainer from "./screens/Docs/DocsContainer";
+import MyProjectsContainer from "./screens/MyProjects/MyProjectsContainer";
+import MyViewContainer from "./screens/MyView/MyViewContainer";
+import NotFound from "./screens/NotFound/NotFound";
+import ReportIssueContainer from "./screens/ReportIssue/ReportIssueContainer";
+import SummaryContainer from "./screens/Summary/SummaryContainer";
+import ViewIssuesContainer from "./screens/ViewIssues/ViewIssuesContainer";
+import LoginContainer from "./screens/Login/LoginContainer";
 
 const AppRoutes = [
   {
-    path: '/',
+    path: "/",
     exact: true,
     component: () => <MyViewContainer />
   },
   {
-    path: '/my-view',
+    path: "/my-view",
     exact: false,
     component: () => <MyViewContainer />
   },
   {
-    path: '/my-projects',
+    path: "/my-projects",
     exact: false,
     component: () => <MyProjectsContainer />
   },
   {
-    path: '/view-issues',
+    path: "/view-issues",
     exact: false,
     component: () => <ViewIssuesContainer />
   },
   {
-    path: '/report-issue',
+    path: "/report-issue",
     exact: false,
     component: () => <ReportIssueContainer />
   },
   {
-    path: '/summary',
+    path: "/summary",
     exact: false,
     component: () => <SummaryContainer />
   },
   {
-    path: '/docs',
+    path: "/docs",
     exact: false,
     component: () => <DocsContainer />
   },
   {
-    path: '',
+    path: "/login",
+    exact: true,
+    component: () => <LoginContainer />
+  },
+  {
+    path: "",
     exact: false,
     component: () => <NotFound />
   }

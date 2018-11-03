@@ -1,6 +1,6 @@
 import React from "react";
 
-const MyView = () => {
+const MyView = props => {
   return (
     <div className="app-content">
       <h1>My view</h1>
