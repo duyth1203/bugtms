@@ -3,7 +3,7 @@ import Media from "react-media";
 import { Sider } from "antd/lib/layout";
 import AppSiderMenuContainer from "./Menu/MenuContainer";
 import AppSiderLinks from "./links";
-import logo from "./logo.png";
+import logo from "../../../logo.png";
 import "./Sider.css";
 
 const AppSider = props => {

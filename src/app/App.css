@@ -9,3 +9,33 @@
   background-color: white;
   padding: 31.5px;
 }
+
+.btn-toggle {
+  height: 100%;
+  width: 65px;
+  background: transparent;
+  border: none !important;
+  padding: 15px !important;
+  cursor: pointer;
+  font-size: 0.7em;
+  outline: none;
+}
+
+.panel__header-title {
+  font-size: 1.5em;
+  font-weight: 450;
+}
+
+.panel__footer {
+  min-height: 26px;
+}
+
+.top {
+  position: absolute;
+  top: 0;
+}
+
+.right {
+  position: absolute;
+  right: 0;
+}

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import ReportIssue from "./ReportIssue";
-import notification from "antd/lib/notification";
+import Notification from "../components/Notification";
 import moment from "moment";
 
 class ReportIssueContainer extends Component {
@@ -73,30 +73,27 @@ class ReportIssueContainer extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    const target = document.getElementById("fetchResultNotiHolder");
+    const { messageType } = this.state;
     this.state.showMessage !== prevState.showMessage &&
+      target &&
       ReactDOM.render(
-        notification[this.state.messageType]({
-          message: this.state.messageType === "success" ? "Success" : "Error",
-          description:
-            this.state.messageType === "success"
-              ? "Successfully reported issue."
-              : "Sorry, failed reporting issue.",
-          duration: 2,
-          placement: "topRight"
-        }),
-        document.querySelector("#postIssueResult")
+        Notification(
+          messageType,
+          messageType === "success" ? "Success" : "Error",
+          messageType === "success"
+            ? "Successfully reported issue."
+            : "Sorry, failed reporting issue.",
+          2,
+          "topRight"
+        ),
+        target
       );
   }
 
   render() {
     return (
-      <React.Fragment>
-        <span id="postIssueResult" />
-        <ReportIssue
-          onSubmit={this.handleSubmit}
-          onChange={this.handleChange}
-        />
-      </React.Fragment>
+      <ReportIssue onSubmit={this.handleSubmit} onChange={this.handleChange} />
     );
   }
 }
