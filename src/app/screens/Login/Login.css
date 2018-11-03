@@ -1,0 +1,21 @@
+.page__login {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page__login__form {
+  height: 350px;
+  width: 100%;
+  min-width: 340px;
+}
+
+.page__login-logo {
+  height: 60px;
+  overflow: hidden;
+}
+.page__login-logo img {
+  width: 100%;
+}
