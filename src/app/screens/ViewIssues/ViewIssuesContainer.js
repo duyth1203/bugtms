@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import ViewIssues from "./ViewIssues";
-import notification from "antd/lib/notification";
+import Notification from "../components/Notification";
 
 class ViewIssuesContainer extends Component {
   constructor() {
@@ -20,25 +20,25 @@ class ViewIssuesContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const target = document.getElementById("fetchResultNotiHolder");
+
     this.state.showMessage !== prevState.showMessage &&
+      target &&
       ReactDOM.render(
-        notification["error"]({
-          message: "Error",
-          description: "Sorry, failed loading issues.",
-          duration: 2,
-          placement: "topRight"
-        }),
-        document.querySelector("#getIssuesResult")
+        Notification(
+          "error",
+          "Error",
+          "Sorry, failed loading issues.",
+          2,
+          "topRight"
+        ),
+        target
       );
   }
 
   render() {
-    return (
-      <React.Fragment>
-        <span id="getIssuesResult" />
-        <ViewIssues issues={this.state.issues} />
-      </React.Fragment>
-    );
+    const { issues } = this.state;
+    return <ViewIssues issues={issues} />;
   }
 }
 

@@ -36,7 +36,10 @@ class AppSiderMenuContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const target = document.getElementById("fetchResultNotiHolder");
+
     this.state.showMessage !== prevState.showMessage &&
+      target &&
       ReactDOM.render(
         notification["error"]({
           message: "Error",
@@ -44,18 +47,13 @@ class AppSiderMenuContainer extends Component {
           duration: 2,
           placement: "topRight"
         }),
-        document.querySelector("#getProjectsMenuResult")
+        target
       );
   }
 
   render() {
     const { links, position } = this.state;
-    return (
-      <React.Fragment>
-        <span id="getProjectsMenuResult" />
-        <AppSiderMenu links={links} position={position} />
-      </React.Fragment>
-    );
+    return <AppSiderMenu links={links} position={position} />;
   }
 }
 
