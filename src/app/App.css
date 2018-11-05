@@ -21,6 +21,10 @@
   outline: none;
 }
 
+.btn-100 {
+  width: 100%;
+}
+
 .panel__header-title {
   font-size: 1.5em;
   font-weight: 450;

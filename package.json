@@ -13,8 +13,8 @@
     "react-scripts": "1.1.5"
   },
   "scripts": {
-    "start": "react-app-rewired start",
     "build": "react-app-rewired build",
+    "start": "react-app-rewired start",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-app-rewired eject"
   },

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Icon from "antd/lib/icon";
 import Table from "antd/lib/table";
-import Pagination from "antd/lib/pagination";
+// import Pagination from "antd/lib/pagination";
 
 class PanelSkeleton extends Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class PanelSkeleton extends Component {
 
   render() {
     const { header, cols, data } = this.props;
-    const { totalPage, panelToggle } = this.state;
+    const { panelToggle } = this.state;
 
     const title = () => (
       <div className="panel__header">
@@ -44,17 +44,17 @@ class PanelSkeleton extends Component {
       </div>
     );
 
-    const footer = () => (
-      <div className="panel__footer">
-        <Pagination
-          className="right"
-          size="small"
-          total={totalPage > 1 ? totalPage : 1}
-          showQuickJumper
-          defaultPageSize={10}
-        />
-      </div>
-    );
+    // const footer = () => (
+    //   <div className="panel__footer">
+    //     <Pagination
+    //       className="right"
+    //       size="small"
+    //       total={totalPage > 1 ? totalPage : 1}
+    //       showQuickJumper
+    //       defaultPageSize={10}
+    //     />
+    //   </div>
+    // );
 
     return (
       <Table

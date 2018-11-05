@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import { Redirect } from "react-router-dom";
 import Login from "./Login";
 import Notification from "../components/Notification";
 
@@ -7,14 +8,17 @@ class LoginContainer extends Component {
   constructor() {
     super();
     this.state = {
+      redirectToReferrer: false,
       username: "",
       password: "",
       showMessageLoginFailed: 0
     };
   }
 
-  onLoginSucceed = datas => {
-    this.props.onLoginSucceed(datas);
+  handleLogInSucceed = user => {
+    this.setState({ redirectToReferrer: true }, () => {
+      this.props.onLoginSucceed(user);
+    });
   };
 
   handleChange = e => {
@@ -28,22 +32,29 @@ class LoginContainer extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    let { username, password } = this.state;
-    fetch("https://localhost:3000/login", {
+    const { username, password } = this.state;
+    if (username.length < 1 || password.length < 1) {
+      this.setState({
+        showMessageLoginFailed: 1 - this.state.showMessageLoginFailed
+      });
+      return;
+    }
+
+    fetch("http://localhost:3000/login", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        username,
-        password
+        user: username,
+        pwd: password
       })
     })
       .then(response => response.json())
-      .then(datas => {
-        if (datas.auth === true) {
-          this.onLoginSucceed(datas);
+      .then(data => {
+        if (data.auth) {
+          this.handleLogInSucceed(data.user);
         } else {
           this.setState({
             showMessageLoginFailed: 1 - this.state.showMessageLoginFailed
@@ -63,9 +74,9 @@ class LoginContainer extends Component {
       target &&
       ReactDOM.render(
         Notification(
-          "error",
-          "Error",
-          "Login failed. Please check your username and password.",
+          "warning",
+          "Warning",
+          "Login failed. Please check your username and password whether they are empty or incorrect.",
           2,
           "topRight"
         ),
@@ -74,7 +85,14 @@ class LoginContainer extends Component {
   }
 
   render() {
-    return <Login onSubmit={this.handleSubmit} onChange={this.handleChange} />;
+    const { redirectToReferrer } = this.state;
+    const { from } = this.props.location.state || { from: { pathname: "/" } };
+
+    return redirectToReferrer ? (
+      <Redirect to={from} />
+    ) : (
+      <Login onSubmit={this.handleSubmit} onChange={this.handleChange} />
+    );
   }
 }
 
