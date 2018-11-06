@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import MyProjects from "./MyProjects";
 import Notification from "../components/Notification";
+import localStorageHelper from "../../../utils/localStorageHelper";
 
 class MyProjectsContainer extends Component {
   constructor() {
@@ -15,9 +16,13 @@ class MyProjectsContainer extends Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:3000/myproject/active")
+    const user = localStorageHelper.getItemLocalStorage("user");
+    if (!user || !user.id) return;
+
+    fetch(`http://localhost:3000/myproject/active/${user.id}`)
       .then(response => response.json())
       .then(datas => {
+        console.log(datas);
         if (datas.status === 0) {
           this.setState({ projectsActive: datas.data });
         } else {
@@ -30,7 +35,7 @@ class MyProjectsContainer extends Component {
         this.setState({ showMessageActive: 1 - this.state.showMessageActive });
       });
 
-    fetch("http://localhost:3000/myproject/closed")
+    fetch(`http://localhost:3000/myproject/closed/${user.id}`)
       .then(response => response.json())
       .then(datas => {
         if (datas.status === 0) {

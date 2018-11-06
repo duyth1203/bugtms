@@ -46,7 +46,7 @@ const AppSiderLinks = [
       {
         icon: "project",
         label: "Projects",
-        fetchFrom: "http://localhost:3000/projects",
+        fetchFrom: "http://localhost:3000/myproject/active/",
         sub: []
       },
       {

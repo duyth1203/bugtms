@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { Redirect } from "react-router-dom";
 import Login from "./Login";
 import Notification from "../components/Notification";
+import authHelper from "../../../utils/authHelper";
 
 class LoginContainer extends Component {
   constructor() {
@@ -15,10 +16,10 @@ class LoginContainer extends Component {
     };
   }
 
-  handleLogInSucceed = user => {
-    this.setState({ redirectToReferrer: true }, () => {
-      this.props.onLoginSucceed(user);
-    });
+  handleLogInSucceed = data => {
+    const { access_token, refresh_token, user } = data;
+    authHelper.login(access_token, refresh_token, user);
+    this.setState({ redirectToReferrer: true });
   };
 
   handleChange = e => {
@@ -54,7 +55,7 @@ class LoginContainer extends Component {
       .then(response => response.json())
       .then(data => {
         if (data.auth) {
-          this.handleLogInSucceed(data.user);
+          this.handleLogInSucceed(data);
         } else {
           this.setState({
             showMessageLoginFailed: 1 - this.state.showMessageLoginFailed
