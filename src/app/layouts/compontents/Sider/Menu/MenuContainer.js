@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import AppSiderMenu from "./Menu";
 import notification from "antd/lib/notification";
-import AuthHelper from "../../../../../utils/authHelper";
-
-const Auth = new AuthHelper();
+import authHelper from "../../../../../utils/authHelper";
+import localStorageHelper from "../../../../../utils/localStorageHelper";
 
 class AppSiderMenuContainer extends Component {
   constructor(props) {
@@ -17,18 +16,20 @@ class AppSiderMenuContainer extends Component {
   }
 
   componentDidMount() {
-    if (!Auth.checkAuth()) return;
+    if (!authHelper.checkAuth()) return;
 
     const { links } = this.state;
     links.forEach(async link => {
-      if (link.fetchFrom) {
+      const user = localStorageHelper.getItemLocalStorage("user");
+
+      if (link.fetchFrom && user && user.id) {
         try {
-          let subs = await fetch(link.fetchFrom);
+          let subs = await fetch(link.fetchFrom + user.id);
           subs = await subs.json();
           subs.data.forEach(sub => {
             link.sub.push({
               to: "/my-projects/" + sub.id,
-              label: sub.name
+              label: sub.project_name
             });
           });
           delete link.fetchFrom;

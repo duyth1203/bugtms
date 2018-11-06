@@ -1,15 +1,13 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import AuthHelper from "../../../utils/authHelper";
-
-const Auth = new AuthHelper();
+import authHelper from "../../../utils/authHelper";
 
 const PrivateRoute = ({ component: Comp, ...rest }) => {
   return (
     <Route
       {...rest}
       render={props =>
-        Auth.checkAuth() ? (
+        authHelper.checkAuth() ? (
           <Comp {...props} />
         ) : (
           <Redirect
