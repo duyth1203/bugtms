@@ -1,21 +1,24 @@
 .page__login {
-  height: 100%;
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .page__login__form {
-  height: 350px;
-  width: 100%;
-  min-width: 340px;
+  max-width: 440px;
+  text-align: center;
+  padding: 40px;
 }
 
 .page__login-logo {
-  height: 60px;
+  max-width: 300px;
   overflow: hidden;
+  margin: 0px auto 22px;
 }
 .page__login-logo img {
   width: 100%;
+}
+
+.page__login__form form > * {
+  margin-bottom: 15px;
 }

@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import AppSiderMenu from "./Menu";
 import notification from "antd/lib/notification";
+import AuthHelper from "../../../../../utils/authHelper";
+
+const Auth = new AuthHelper();
 
 class AppSiderMenuContainer extends Component {
   constructor(props) {
@@ -14,6 +17,8 @@ class AppSiderMenuContainer extends Component {
   }
 
   componentDidMount() {
+    if (!Auth.checkAuth()) return;
+
     const { links } = this.state;
     links.forEach(async link => {
       if (link.fetchFrom) {
