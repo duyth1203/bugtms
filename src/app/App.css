@@ -1,13 +1,26 @@
 @import "~antd/dist/antd.css";
 
+.ant-form-item-label {
+  padding-right: 10px;
+  font-weight: bold;
+}
+
+.ant-layout-content {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.ant-table-thead th {
+  padding: 6px 16px !important;
+}
+
 .app-container > div:first-of-type {
-  min-height: 100vh;
+  height: 100vh;
   min-width: 360px;
 }
 
 .app-content {
-  background-color: white;
-  padding: 31.5px;
+  margin-bottom: 20px;
 }
 
 .btn-toggle {
@@ -25,15 +38,6 @@
   width: 100%;
 }
 
-.panel__header-title {
-  font-size: 1.5em;
-  font-weight: 450;
-}
-
-.panel__footer {
-  min-height: 26px;
-}
-
 .top {
   position: absolute;
   top: 0;
@@ -42,4 +46,39 @@
 .right {
   position: absolute;
   right: 0;
+}
+
+.section__report-btn.ant-btn-sm {
+  border: none;
+  box-shadow: none;
+  color: CornflowerBlue;
+}
+
+/* coloring status */
+.new {
+  background: #ffffff;
+}
+
+.resolved {
+  background: #f9ffef;
+}
+
+.closed {
+  background: #efefef;
+}
+
+.feedback {
+  background: #fcf7de;
+}
+
+.confirmed {
+  background: #fff0e0;
+}
+
+.assigned {
+  background: #fff2f2;
+}
+
+.acknowledged {
+  background: #eaedff;
 }

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import message from "antd/lib/message";
 import MyProjects from "./MyProjects";
-import Notification from "../components/Notification";
 import localStorageHelper from "../../../utils/localStorageHelper";
 
 class MyProjectsContainer extends Component {
@@ -9,9 +8,7 @@ class MyProjectsContainer extends Component {
     super();
     this.state = {
       projectsActive: [],
-      projectsClosed: [],
-      showMessageActive: 0,
-      showMessageClosed: 0
+      projectsClosed: []
     };
   }
 
@@ -19,66 +16,27 @@ class MyProjectsContainer extends Component {
     const user = localStorageHelper.getItemLocalStorage("user");
     if (!user || !user.id) return;
 
-    fetch(`http://localhost:3000/myproject/active/${user.id}`)
+    fetch(`http://localhost:3001/myproject/active/${user.id}`)
       .then(response => response.json())
       .then(datas => {
-        console.log(datas);
         if (datas.status === 0) {
           this.setState({ projectsActive: datas.data });
         } else {
-          this.setState({
-            showMessageActive: 1 - this.state.showMessageActive
-          });
+          message.error("Sorry, failed loading active projects.");
         }
       })
-      .catch(err => {
-        this.setState({ showMessageActive: 1 - this.state.showMessageActive });
-      });
+      .catch(err => message.error("Sorry, failed loading active projects."));
 
-    fetch(`http://localhost:3000/myproject/closed/${user.id}`)
+    fetch(`http://localhost:3001/myproject/closed/${user.id}`)
       .then(response => response.json())
       .then(datas => {
         if (datas.status === 0) {
           this.setState({ projectsClosed: datas.data });
         } else {
-          this.setState({
-            showMessageClosed: 1 - this.state.showMessageClosed
-          });
+          message.error("Sorry, failed loading closed projects.");
         }
       })
-      .catch(err => {
-        this.setState({ showMessageClosed: 1 - this.state.showMessageClosed });
-      });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const target = document.getElementById("fetchResultNotiHolder");
-
-    this.state.showMessageActive !== prevState.showMessageActive &&
-      target &&
-      ReactDOM.render(
-        Notification(
-          "error",
-          "Error",
-          "Sorry, failed loading active projects.",
-          2,
-          "topRight"
-        ),
-        target
-      );
-
-    this.state.showMessageClosed !== prevState.showMessageClosed &&
-      target &&
-      ReactDOM.render(
-        Notification(
-          "error",
-          "Error",
-          "Sorry, failed loading closed projects.",
-          2,
-          "topRight"
-        ),
-        target
-      );
+      .catch(err => message.error("Sorry, failed loading close projects."));
   }
 
   render() {

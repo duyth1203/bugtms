@@ -6,57 +6,75 @@ import NotFound from "./screens/NotFound/NotFound";
 import ReportIssueContainer from "./screens/ReportIssue/ReportIssueContainer";
 import SummaryContainer from "./screens/Summary/SummaryContainer";
 import ViewIssuesContainer from "./screens/ViewIssues/ViewIssuesContainer";
-// import LoginContainer from "./screens/Login/LoginContainer";
+import ViewIssueDetailsContainer from "./screens/ViewIssueDetails/ViewIssueDetailsContainer";
+import CommentViewContainer from "./screens/components/CommentView/CommentViewContainer";
+import RedirectWrapper from "./screens/components/RedirectWrapper";
+import LogOut from "./screens/components/LogOut";
 
 const AppRoutes = [
   {
     path: "/",
     exact: true,
     isPrivate: true,
-    component: () => <MyViewContainer />
+    component: props => <MyProjectsContainer {...props} />
   },
   {
     path: "/my-view",
-    exact: false,
+    exact: true,
     isPrivate: true,
-    component: () => <MyViewContainer />
+    component: props => <MyViewContainer {...props} />
   },
   {
     path: "/my-projects",
-    exact: false,
+    exact: true,
     isPrivate: true,
-    component: () => <MyProjectsContainer />
+    component: props => <MyProjectsContainer {...props} />
   },
   {
     path: "/view-issues",
-    exact: false,
+    exact: true,
     isPrivate: true,
-    component: () => <ViewIssuesContainer />
+    component: props => <ViewIssuesContainer {...props} />
+  },
+  {
+    path: "/view-issues/:id",
+    exact: true,
+    isPrivate: true,
+    component: props => (
+      <React.Fragment>
+        <ViewIssueDetailsContainer {...props} />
+        <CommentViewContainer {...props} />
+      </React.Fragment>
+    )
   },
   {
     path: "/report-issue",
-    exact: false,
+    exact: true,
     isPrivate: true,
-    component: () => <ReportIssueContainer />
+    component: props => (
+      <RedirectWrapper>
+        <ReportIssueContainer {...props} />
+      </RedirectWrapper>
+    )
   },
   {
     path: "/summary",
-    exact: false,
+    exact: true,
     isPrivate: true,
     component: () => <SummaryContainer />
   },
   {
     path: "/docs",
-    exact: false,
+    exact: true,
     isPrivate: true,
     component: () => <DocsContainer />
   },
-  // {
-  //   path: "/login",
-  //   exact: true,
-  //   isPrivate: false,
-  //   component: ({ location }) => <LoginContainer {...location} />
-  // },
+  {
+    path: "/log-out",
+    exact: false,
+    isPrivate: false,
+    component: () => <LogOut />
+  },
   {
     path: "",
     exact: false,

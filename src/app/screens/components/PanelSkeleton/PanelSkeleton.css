@@ -1,0 +1,8 @@
+.panel__header-title {
+  font-size: 1.5em;
+  font-weight: 450;
+}
+
+.panel__footer {
+  min-height: 26px;
+}

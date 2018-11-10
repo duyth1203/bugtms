@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import Icon from "antd/lib/icon";
 import Table from "antd/lib/table";
+import "./PanelSkeleton.css";
 // import Pagination from "antd/lib/pagination";
 
 class PanelSkeleton extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      panelToggle: true,
-      data: props.data
+      panelToggle: true
     };
   }
 
@@ -25,7 +25,7 @@ class PanelSkeleton extends Component {
   };
 
   render() {
-    const { header, cols, data } = this.props;
+    const { header, cols, data, pagination, showHeader, footer } = this.props;
     const { panelToggle } = this.state;
 
     const title = () => (
@@ -58,11 +58,19 @@ class PanelSkeleton extends Component {
 
     return (
       <Table
+        bordered
         columns={cols}
         dataSource={data}
-        bordered
+        footer={footer}
+        pagination={pagination}
+        rowClassName={(record, index) => {
+          return (
+            (data[index].status && data[index].status.trim().toLowerCase()) ||
+            (record.status && record.status.trim().toLowerCase())
+          );
+        }}
+        showHeader={showHeader}
         title={title}
-        // footer={footer}
       />
     );
   }

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import { Redirect } from "react-router-dom";
+import message from "antd/lib/message";
 import Login from "./Login";
-import Notification from "../components/Notification";
 import authHelper from "../../../utils/authHelper";
 
 class LoginContainer extends Component {
@@ -34,14 +33,12 @@ class LoginContainer extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { username, password } = this.state;
-    if (username.length < 1 || password.length < 1) {
-      this.setState({
-        showMessageLoginFailed: 1 - this.state.showMessageLoginFailed
-      });
-      return;
-    }
+    if (username.length < 1 || password.length < 1)
+      return message.warning(
+        "Please check if your user name or password is empty."
+      );
 
-    fetch("http://localhost:3000/login", {
+    fetch("http://localhost:3001/login", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -57,33 +54,13 @@ class LoginContainer extends Component {
         if (data.auth) {
           this.handleLogInSucceed(data);
         } else {
-          this.setState({
-            showMessageLoginFailed: 1 - this.state.showMessageLoginFailed
-          });
+          message.error(
+            "Login failed. Please check your username and password."
+          );
         }
       })
-      .catch(err => {
-        this.setState({
-          showMessageLoginFailed: 1 - this.state.showMessageLoginFailed
-        });
-      });
+      .catch(err => message.error("Sorry, login failed due to server error."));
   };
-
-  componentDidUpdate(prevProps, prevState) {
-    const target = document.getElementById("fetchResultNotiHolder");
-    this.state.showMessageLoginFailed !== prevState.showMessageLoginFailed &&
-      target &&
-      ReactDOM.render(
-        Notification(
-          "warning",
-          "Warning",
-          "Login failed. Please check your username and password whether they are empty or incorrect.",
-          2,
-          "topRight"
-        ),
-        target
-      );
-  }
 
   render() {
     const { redirectToReferrer } = this.state;

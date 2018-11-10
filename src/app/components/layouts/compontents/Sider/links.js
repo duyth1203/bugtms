@@ -3,37 +3,37 @@ const AppSiderLinks = [
     position: "top",
     links: [
       {
-        to: "my-projects",
+        to: "/my-projects",
         exact: "true",
         icon: "project",
         label: "My Projects"
       },
       {
-        to: "my-view",
+        to: "/my-view",
         exact: "true",
         icon: "dashboard",
         label: "My View"
       },
       {
-        to: "view-issues",
+        to: "/view-issues",
         exact: "true",
         icon: "issues-close",
         label: "View Issues"
       },
       {
-        to: "report-issue",
+        to: "/report-issue",
         exact: "true",
         icon: "form",
         label: "Report Issue"
       },
       {
-        to: "summary",
+        to: "/summary",
         exact: "true",
         icon: "radar-chart",
         label: "Summary"
       },
       {
-        to: "docs",
+        to: "/docs",
         exact: "true",
         icon: "book",
         label: "Docs"
@@ -46,7 +46,7 @@ const AppSiderLinks = [
       {
         icon: "project",
         label: "Projects",
-        fetchFrom: "http://localhost:3000/myproject/active/",
+        fetchFrom: "http://localhost:3001/myview/getProjectByUser/",
         sub: []
       },
       {
@@ -54,8 +54,8 @@ const AppSiderLinks = [
         label: "User",
         sub: [
           {
-            to: "logout",
-            exact: "true",
+            to: "/log-out",
+            exact: "false",
             icon: "logout",
             label: "Log out"
           }
