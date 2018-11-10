@@ -3,7 +3,7 @@ import Media from "react-media";
 import { Sider } from "antd/lib/layout";
 import AppSiderMenuContainer from "./Menu/MenuContainer";
 import AppSiderLinks from "./links";
-import logo from "../../../logo.png";
+import logo from "../../../../logo.png";
 import "./Sider.css";
 
 const AppSider = props => {
@@ -22,8 +22,11 @@ const AppSider = props => {
           <div className="app-logo">
             <img src={logo} alt="Logo" />
           </div>
-          <AppSiderMenuContainer links={AppSiderLinks[0]} />
-          <AppSiderMenuContainer links={AppSiderLinks[1]} />
+          <AppSiderMenuContainer links={AppSiderLinks[0]} currentSelected="" />
+          <AppSiderMenuContainer
+            links={AppSiderLinks[1]}
+            currentSelected="All"
+          />
         </Sider>
       )}
     </Media>

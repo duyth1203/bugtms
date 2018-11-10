@@ -1,15 +1,16 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Table from "antd/lib/table";
 
 const ViewIssues = props => {
   const dataSrc = props.issues.map(issue => ({
     key: issue.id,
     id: issue.id,
-    bug_note: issue.bug_note,
-    attachment: issue.attachment,
+    // attachment: issue.attachment,
     category: issue.category,
-    status: issue.status,
-    updated: issue.updated,
+    severity: issue.severity,
+    status: issue.statusIssue,
+    updated: issue.last_update,
     summary: issue.summary
   }));
 
@@ -17,22 +18,24 @@ const ViewIssues = props => {
     {
       title: "ID",
       dataIndex: "id",
-      key: "id"
+      key: "id",
+      render: id => <Link to={`/view-issues/${id}`}>{id}</Link>
     },
-    {
-      title: "Notes",
-      dataIndex: "bug_note",
-      key: "bug_note"
-    },
-    {
-      title: "Attachment",
-      dataIndex: "attachment",
-      key: "attachment"
-    },
+    // {
+    //   title: "Attachment",
+    //   dataIndex: "attachment",
+    //   key: "attachment"
+    // },
     {
       title: "Category",
       dataIndex: "category",
       key: "category"
+    },
+
+    {
+      title: "Severity",
+      dataIndex: "severity",
+      key: "severity"
     },
     {
       title: "Status",
@@ -53,7 +56,15 @@ const ViewIssues = props => {
 
   return (
     <div className="app-content">
-      <Table dataSource={dataSrc} columns={cols} />
+      <h1>View Issues</h1>
+      <Table
+        bordered
+        dataSource={dataSrc}
+        columns={cols}
+        rowClassName={record =>
+          record.status && record.status.trim().toLowerCase()
+        }
+      />
     </div>
   );
 };
