@@ -1,18 +1,9 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import AppSiderMenu from "./Menu";
-import notification from "antd/lib/notification";
 import authHelper from "../../../../../../utils/authHelper";
 import localStorageHelper from "../../../../../../utils/localStorageHelper";
 
 class AppSiderMenuContainer extends Component {
-  constructor() {
-    super();
-    this.state = {
-      showMessage: 0
-    };
-  }
-
   fetchProjectByUser = () => {
     if (!authHelper.checkAuth()) return authHelper.logout();
 
@@ -44,27 +35,14 @@ class AppSiderMenuContainer extends Component {
     });
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate() {
     this.fetchProjectByUser();
-
-    const target = document.getElementById("fetchResultNotiHolder");
-    this.state.showMessage !== prevState.showMessage &&
-      target &&
-      ReactDOM.render(
-        notification["error"]({
-          message: "Error",
-          description: "Sorry, failed loading projects.",
-          duration: 2,
-          placement: "topRight"
-        }),
-        target
-      );
   }
 
   render() {
     const { links, position } = this.props.links,
       { currentSelected } = this.props;
-
+      
     return (
       <AppSiderMenu
         links={links}

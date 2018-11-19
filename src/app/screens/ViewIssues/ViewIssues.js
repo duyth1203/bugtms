@@ -9,7 +9,7 @@ const ViewIssues = props => {
     // attachment: issue.attachment,
     category: issue.category,
     severity: issue.severity,
-    status: issue.statusIssue,
+    statusIssue: issue.statusIssue,
     updated: issue.last_update,
     summary: issue.summary
   }));
@@ -39,8 +39,8 @@ const ViewIssues = props => {
     },
     {
       title: "Status",
-      dataIndex: "status",
-      key: "status"
+      dataIndex: "statusIssue",
+      key: "statusIssue"
     },
     {
       title: "Updated",
@@ -62,7 +62,7 @@ const ViewIssues = props => {
         dataSource={dataSrc}
         columns={cols}
         rowClassName={record =>
-          record.status && record.status.trim().toLowerCase()
+          record.statusIssue && record.statusIssue.toLowerCase()
         }
       />
     </div>

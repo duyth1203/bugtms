@@ -181,7 +181,7 @@ const ReportIssue = props => {
           <Button
             type="primary"
             htmlType="submit"
-            onClick={() => props.onSubmit}
+            onClick={() => onSubmit}
           >
             Submit
           </Button>

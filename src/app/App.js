@@ -22,7 +22,6 @@ class App extends Component {
     return (
       <Router>
         <MainLayout>
-          <span id="fetchResultNotiHolder" />
           <Switch>
             <Route
               path="/login"

@@ -11,33 +11,42 @@ class CommentViewContainer extends Component {
         props.location.pathname.substr(
           props.location.pathname.lastIndexOf("/") + 1
         ),
-      comments: [],
-      willReload: 0
+      comments: []
     };
   }
 
-  componentDidMount() {
-    const { idIssue } = this.state;
-
-    fetch(`http://localhost:3001/getnote/${idIssue}`)
-      .then(response => response.json())
-      .then(comments => {
-        this.setState({ comments });
-      })
-      .catch(err => message.error("Sorry, failed loading comments."));
+  fetchComments = () => {
+      const { idIssue } = this.state;
+      fetch(`http://localhost:3001/getnote/${idIssue}`)
+          .then(response => response.json())
+          .then(comments => {
+              if(comments && comments.length > 0) this.setState({ comments });
+              else this.setState({comments: []});
+          })
+          .catch(err => message.error("Sorry, failed loading comments."));
   }
 
-  handleReload = () => {
-    this.setState({ willReload: 1 - this.state.willReload });
+  componentDidMount() {
+    this.fetchComments();
+  }
+
+  componentDidUpdate(prevProps,  prevState) {
+    if(prevProps.willReload !== this.props.willReload) {
+      this.fetchComments();
+    }
+  }
+
+  handleDeleteSucceed = () => {
+    this.props.onReload();
   };
 
   render() {
     const { comments } = this.state;
-    const _comments = comments.map(comment => (
+    const _comments = comments && comments.map(comment => (
       <ACommentViewContainer
         key={comment.id}
         comment={comment}
-        onReload={this.handleReload}
+        onDeleteSucceed={this.handleDeleteSucceed}
       />
     ));
 

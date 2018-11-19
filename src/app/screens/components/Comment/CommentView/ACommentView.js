@@ -7,11 +7,14 @@ import "./CommentView.css";
 
 const ACommentView = props => {
   const {
-    comment: { id, username, date_submitted, note_content },
-    onChange,
-    onDelete,
-    onSubmitEdit
+    comment: { id, username, date_submitted, note_content, userId },
   } = props;
+
+  const onDelete = () => {
+    props.onDelete();
+  };
+
+  const _userId = localStorage && localStorage.getItem("user") && JSON.parse(localStorage.getItem("user")).id;
 
   const dataSrc = [{ summary: username, note_content }],
     title = () => (
@@ -20,7 +23,7 @@ const ACommentView = props => {
           <span className="comment__title-index">#{id}</span> on{" "}
           {date_submitted}
         </div>
-        <div className="comment__action">
+          { userId === _userId && (<div className="comment__action">
           <Popconfirm title="Are you sure?" onConfirm={onDelete}>
             <Button size="small" className="comment__action-btn" type="danger">
               <Icon type="delete" />
@@ -30,7 +33,7 @@ const ACommentView = props => {
           <Button size="small" className="comment__action-btn">
             <Icon type="edit" />
           </Button>
-        </div>
+        </div>)}
       </div>
     );
 

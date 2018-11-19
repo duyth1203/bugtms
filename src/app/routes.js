@@ -7,7 +7,7 @@ import ReportIssueContainer from "./screens/ReportIssue/ReportIssueContainer";
 import SummaryContainer from "./screens/Summary/SummaryContainer";
 import ViewIssuesContainer from "./screens/ViewIssues/ViewIssuesContainer";
 import ViewIssueDetailsContainer from "./screens/ViewIssueDetails/ViewIssueDetailsContainer";
-import CommentViewContainer from "./screens/components/CommentView/CommentViewContainer";
+import CommentContainer from "./screens/components/Comment/CommentContainer";
 import RedirectWrapper from "./screens/components/RedirectWrapper";
 import LogOut from "./screens/components/LogOut";
 
@@ -43,7 +43,7 @@ const AppRoutes = [
     component: props => (
       <React.Fragment>
         <ViewIssueDetailsContainer {...props} />
-        <CommentViewContainer {...props} />
+        <CommentContainer {...props} />
       </React.Fragment>
     )
   },

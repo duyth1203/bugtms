@@ -36,6 +36,7 @@ const AppSiderMenuItem = (key, link) => {
 class AppSiderMenu extends Component {
   constructor(props) {
     super(props);
+    // console.log(props.currentSelected);
     this.state = {
       currentSelected: props.currentSelected
     };

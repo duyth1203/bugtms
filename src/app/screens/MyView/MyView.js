@@ -9,61 +9,58 @@ const MyView = props => {
   const { issuesUnassign, issuesIsResolve, issuesLast30Days, timeLine } = props;
 
   const renderPanelIssue = txt => {
-    const projectNameIndex = txt.indexOf("@projectname") + 12,
-      summaryIndex = txt.indexOf("@summary") + 8,
-      categoryIndex = txt.indexOf("@category") + 9,
-      dayTimeIndex = txt.indexOf("@daytime") + 8;
+    const projectNameIndex = +txt.indexOf("@projectname") + "@projectname".length,
+      summaryIndex = +txt.indexOf("@summary") + "@summary".length,
+      categoryIndex = +txt.indexOf("@category") + "@category".length,
+      dayTimeIndex = +txt.indexOf("@daytime") + "@daytime".length;
     // return if nothing found
     if (
-      projectNameIndex - 12 === -1 &&
-      summaryIndex - 8 === -1 &&
-      categoryIndex - 9 === -1 &&
-      dayTimeIndex - 8 === -1
+      +projectNameIndex - "@projectname".length === -1 &&
+      +summaryIndex - "@summary".length === -1 &&
+      +categoryIndex - "@category".length === -1 &&
+      +dayTimeIndex - "@daytime".length === -1
     )
       return txt;
 
-    const projectName = txt.substring(projectNameIndex, summaryIndex - 8),
-      summary = txt.substring(summaryIndex, categoryIndex - 9),
-      category = txt.substring(categoryIndex, dayTimeIndex - 8),
-      dayTime = txt.substring(dayTimeIndex);
+    const projectName = txt.substring(+projectNameIndex, +summaryIndex - "@summary".length),
+      summary = txt.substring(+summaryIndex, +categoryIndex - "@category".length),
+      category = txt.substring(+categoryIndex, +dayTimeIndex - "@daytime".length),
+      dayTime = txt.substring(+dayTimeIndex);
     return (
       <div>
-        {projectName ? (
-          <span>
-            {projectName}&nbsp;<b>{summary}</b>
-          </span>
-        ) : (
-          { summary }
-        )}
+          {
+              +localStorageHelper.getItemLocalStorage("defaultProjectId") === -1 ?
+                  (<span>{projectName} <b>{summary}</b></span>) :
+                  (<span><b>{summary}</b></span>)
+          }
         <br />
         <span style={{ fontSize: "0.9em" }}>
-          {category}&nbsp;{dayTime}
+          {category} {dayTime}
         </span>
       </div>
     );
   };
 
   const renderPanelTimeLine = txt => {
-    const usernameIndex = txt.indexOf("@username") + 9,
-      issueIdIndex = txt.indexOf("@idissue") + 8,
-      dayTimeIndex = txt.lastIndexOf("@daytime") + 8;
+    const usernameIndex = +txt.indexOf("@username") + "@username".length,
+      issueIdIndex = +txt.indexOf("@idissue") + "@idissue".length,
+      dayTimeIndex = +txt.lastIndexOf("@daytime") + "@daytime".length;
     // return if nothing found
     if (
-      usernameIndex - 9 === -1 &&
-      issueIdIndex - 8 === -1 &&
-      dayTimeIndex - 8 === -1
+      +usernameIndex - "@username".length === -1 &&
+      +issueIdIndex - "@idissue".length === -1 &&
+      +dayTimeIndex - "@daytime".length === -1
     )
       return txt;
 
-    const username = txt.substring(usernameIndex, issueIdIndex - 8),
-      issueId = txt.substring(issueIdIndex, dayTimeIndex - 8),
-      dayTime = txt.substring(dayTimeIndex);
+    const username = txt.substring(+usernameIndex, +issueIdIndex - "@idissue".length),
+      issueId = txt.substring(+issueIdIndex, +dayTimeIndex - "@daytime".length),
+      dayTime = txt.substring(+dayTimeIndex);
     return (
       <span>
-        <b>{username}</b>&nbsp;commented&nbsp;on&nbsp;issue&nbsp;
+        <b>{username}</b> commented on issue&nbsp;
         <Link to={`/view-issues/${issueId}`}>{issueId}</Link>
-        &nbsp;on&nbsp;
-        {dayTime}
+         &nbsp;on&nbsp;{dayTime}
       </span>
     );
   };
@@ -128,46 +125,38 @@ const MyView = props => {
     unassign:
       issuesUnassign &&
       issuesUnassign.map(
-        ({ idIssue, name, category, dayTime, summary, status }) => ({
+        ({ idIssue, name, category, dayTime, summary, statusIssue }) => ({
           idIssue,
           key: idIssue,
           general_info:
-            (+localStorageHelper.getItemLocalStorage("defaultProjectId") === -1
-              ? `@projectname[${name}]`
-              : `@projectname`) +
-            `@summary${summary}@category${category}@daytime${dayTime}`,
-          status
+            `@projectname[${name}]@summary${summary}@category${category}@daytime${dayTime}`,
+          statusIssue
         })
       ),
     isResolve:
       issuesIsResolve &&
       issuesIsResolve.map(
-        ({ idIssue, name, category, dayTime, summary, status }) => ({
+        ({ idIssue, name, category, dayTime, summary, statusIssue }) => ({
           idIssue,
           key: idIssue,
           general_info:
-            (+localStorageHelper.getItemLocalStorage("defaultProjectId") === -1
-              ? `@projectname[${name}]`
-              : `@projectname`) +
-            `@summary${summary}@category${category}@daytime${dayTime}`,
-          status
+            `@projectname[${name}]@summary${summary}@category${category}@daytime${dayTime}`,
+          statusIssue
         })
       ),
     last30Days:
       issuesLast30Days &&
       issuesLast30Days.map(
-        ({ idIssue, name, category, dayTime, summary, status }) => ({
+        ({ idIssue, name, category, dayTime, summary, statusIssue }) => ({
           idIssue,
           key: idIssue,
           general_info:
-            (+localStorageHelper.getItemLocalStorage("defaultProjectId") === -1
-              ? `@projectname[${name}]`
-              : `@projectname`) +
-            `@summary${summary}@category${category}@daytime${dayTime}`,
-          status
+            `@projectname[${name}]@summary${summary}@category${category}@daytime${dayTime}`,
+          statusIssue
         })
       ),
-    timeLine: timeLine.map(({ username, idIssue, dayTime }) => ({
+    timeLine: timeLine.map(({ id, username, idIssue, dayTime }) => ({
+      key: `${id}${idIssue}`,
       timeline: `@username${username}@idissue${idIssue}@daytime${dayTime}`
     }))
   };
