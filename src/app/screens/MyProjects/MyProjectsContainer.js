@@ -36,7 +36,7 @@ class MyProjectsContainer extends Component {
           message.error("Sorry, failed loading closed projects.");
         }
       })
-      .catch(err => message.error("Sorry, failed loading close projects."));
+      .catch(err => message.error("Sorry, failed loading closed projects."));
   }
 
   render() {

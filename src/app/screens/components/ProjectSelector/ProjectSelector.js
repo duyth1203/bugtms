@@ -70,7 +70,7 @@ const ProjectSelector = props => {
           >
             {props.projects.map(({ id, name }) => (
               <Option key={id} value={id}>
-                {name}>
+                {name}
               </Option>
             ))}
           </Select>

@@ -10,7 +10,7 @@ const ProjectSelectRedirect = props => {
   if (!Number.isNaN(newDefaultProjectId))
     localStorageHelper.setItemLocalStorage(
       "defaultProjectId",
-      newDefaultProjectId
+      +newDefaultProjectId
     );
 
   props.history.goBack();

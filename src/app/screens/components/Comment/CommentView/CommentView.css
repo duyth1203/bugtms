@@ -1,3 +1,7 @@
+.table__comment{
+  margin-bottom: 10px;
+}
+
 .table__comment-title {
   margin: -11px;
   padding-left: 16px;

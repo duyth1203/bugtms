@@ -35,7 +35,7 @@ class LoginContainer extends Component {
     const { username, password } = this.state;
     if (username.length < 1 || password.length < 1)
       return message.warning(
-        "Please check if your user name or password is empty."
+        "Please check if your user name or password were empty."
       );
 
     fetch("http://localhost:3001/login", {

@@ -25,6 +25,7 @@ const MyProjects = props => {
         finished_bug: pj.finished_bug
       }))
   };
+
   const cols = {
     active: [
       {

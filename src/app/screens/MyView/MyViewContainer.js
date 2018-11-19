@@ -41,7 +41,6 @@ class MyViewContainer extends Component {
                 dayTime,
                 status
               }) => ({
-                key: idIssue,
                 name,
                 idIssue,
                 category,
@@ -74,7 +73,6 @@ class MyViewContainer extends Component {
                 dayTime,
                 status
               }) => ({
-                key: idIssue,
                 name,
                 idIssue,
                 category,
@@ -105,7 +103,6 @@ class MyViewContainer extends Component {
                 dayTime,
                 status
               }) => ({
-                key: idIssue,
                 name,
                 idIssue,
                 category,
@@ -130,7 +127,7 @@ class MyViewContainer extends Component {
             const { timeLine: _timeLine } = data;
             const timeLine = _timeLine.map(
               ({ id, username, idIssue, dayTime, status }) => ({
-                key: id,
+                // id,
                 username,
                 idIssue,
                 dayTime,
@@ -160,7 +157,6 @@ class MyViewContainer extends Component {
                 dayTime,
                 status
               }) => ({
-                key: idIssue,
                 name,
                 idIssue,
                 category,
@@ -184,7 +180,7 @@ class MyViewContainer extends Component {
         .then(datas => {
           const { status, data } = datas;
           if (status === 0 && data) {
-            const { isResolve } = datas;
+            const { isResolve } = data;
             const issuesIsResolve = isResolve.map(
               ({
                 name,
@@ -195,7 +191,6 @@ class MyViewContainer extends Component {
                 dayTime,
                 status
               }) => ({
-                key: idIssue,
                 name,
                 idIssue,
                 category,
@@ -208,7 +203,7 @@ class MyViewContainer extends Component {
             this.setState({ issuesIsResolve });
           }
         })
-        .catch(err => message.error("Sorry, failed loading solved issues."));
+        .catch(err => {console.log(err);message.error("Sorry, failed loading solved issues.")});
 
       fetch(
         `http://localhost:3001/myview/getLast30DaysP/${userId}/1/${projectId}`
@@ -228,7 +223,6 @@ class MyViewContainer extends Component {
                 dayTime,
                 status
               }) => ({
-                key: idIssue,
                 name,
                 idIssue,
                 category,
@@ -253,7 +247,7 @@ class MyViewContainer extends Component {
             const { timeLine: _timeLine } = data;
             const timeLine = _timeLine.map(
               ({ id, username, idIssue, dayTime, status }) => ({
-                key: id,
+                // id,
                 username,
                 idIssue,
                 dayTime,

@@ -21,13 +21,18 @@ class ACommentViewContainer extends Component {
 
   handleDelete = () => {
     const noteId = this.props.comment.id;
-    if (!noteId) return;
+    if (!noteId) return message.error("Cannot identify note ID.");
 
-    fetch(`http://localhost:3000/deletenote/${noteId}`)
-      // .then(response => response.json())
+    fetch(`http://localhost:3001/deletenote/${noteId}`, {
+      method: "DELETE"
+    })
+      .then(response => response.json())
       .then(datas => {
         const { status } = datas;
-        if (status === 200 || status === 0) this.props.onReload();
+        if (status !== 404) {
+            message.success("Successfully deleted note");
+            setTimeout(() => this.props.onDeleteSucceed(), 500);
+        }
       })
       .catch(err => message.error("Sorry, failed deleting the comment."));
   };
