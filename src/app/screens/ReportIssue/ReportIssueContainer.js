@@ -51,6 +51,10 @@ class ReportIssueContainer extends Component {
       resolution
     } = this.state;
 
+    if(summary.length < 1 || description.length < 1 || reporter.length < 1 || assign_to.length < 1) return message.warning(
+        "Please check if any required field was empty."
+      );
+
     if (!project_id || +project_id === -1)
       return message.error(
         "Sorry, no project selected so failed reporting the issue."
@@ -81,7 +85,7 @@ class ReportIssueContainer extends Component {
       .then(response => response.json())
       .then(data => {
         const { status, ok } = data;
-        if (status === 200 && ok === true) {
+        if (status === 0) {
           message.success("Successfully reported the issue.");
         } else {
           message.error("Sorry, failed reporting the issue.");
