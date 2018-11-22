@@ -203,7 +203,10 @@ class MyViewContainer extends Component {
             this.setState({ issuesIsResolve });
           }
         })
-        .catch(err => {console.log(err);message.error("Sorry, failed loading solved issues.")});
+        .catch(err => {
+          console.log(err);
+          message.error("Sorry, failed loading solved issues.");
+        });
 
       fetch(
         `http://localhost:3001/myview/getLast30DaysP/${userId}/1/${projectId}`
