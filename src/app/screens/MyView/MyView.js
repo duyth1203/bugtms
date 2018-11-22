@@ -9,7 +9,8 @@ const MyView = props => {
   const { issuesUnassign, issuesIsResolve, issuesLast30Days, timeLine } = props;
 
   const renderPanelIssue = txt => {
-    const projectNameIndex = +txt.indexOf("@projectname") + "@projectname".length,
+    const projectNameIndex =
+        +txt.indexOf("@projectname") + "@projectname".length,
       summaryIndex = +txt.indexOf("@summary") + "@summary".length,
       categoryIndex = +txt.indexOf("@category") + "@category".length,
       dayTimeIndex = +txt.indexOf("@daytime") + "@daytime".length;
@@ -22,17 +23,30 @@ const MyView = props => {
     )
       return txt;
 
-    const projectName = txt.substring(+projectNameIndex, +summaryIndex - "@summary".length),
-      summary = txt.substring(+summaryIndex, +categoryIndex - "@category".length),
-      category = txt.substring(+categoryIndex, +dayTimeIndex - "@daytime".length),
+    const projectName = txt.substring(
+        +projectNameIndex,
+        +summaryIndex - "@summary".length
+      ),
+      summary = txt.substring(
+        +summaryIndex,
+        +categoryIndex - "@category".length
+      ),
+      category = txt.substring(
+        +categoryIndex,
+        +dayTimeIndex - "@daytime".length
+      ),
       dayTime = txt.substring(+dayTimeIndex);
     return (
       <div>
-          {
-              +localStorageHelper.getItemLocalStorage("defaultProjectId") === -1 ?
-                  (<span>{projectName} <b>{summary}</b></span>) :
-                  (<span><b>{summary}</b></span>)
-          }
+        {+localStorageHelper.getItemLocalStorage("defaultProjectId") === -1 ? (
+          <span>
+            {projectName} <b>{summary}</b>
+          </span>
+        ) : (
+          <span>
+            <b>{summary}</b>
+          </span>
+        )}
         <br />
         <span style={{ fontSize: "0.9em" }}>
           {category} {dayTime}
@@ -53,14 +67,17 @@ const MyView = props => {
     )
       return txt;
 
-    const username = txt.substring(+usernameIndex, +issueIdIndex - "@idissue".length),
+    const username = txt.substring(
+        +usernameIndex,
+        +issueIdIndex - "@idissue".length
+      ),
       issueId = txt.substring(+issueIdIndex, +dayTimeIndex - "@daytime".length),
       dayTime = txt.substring(+dayTimeIndex);
     return (
       <span>
         <b>{username}</b> commented on issue&nbsp;
         <Link to={`/view-issues/${issueId}`}>{issueId}</Link>
-         &nbsp;on&nbsp;{dayTime}
+        &nbsp;on&nbsp;{dayTime}
       </span>
     );
   };
@@ -128,8 +145,7 @@ const MyView = props => {
         ({ idIssue, name, category, dayTime, summary, statusIssue }) => ({
           idIssue,
           key: idIssue,
-          general_info:
-            `@projectname[${name}]@summary${summary}@category${category}@daytime${dayTime}`,
+          general_info: `@projectname[${name}]@summary${summary}@category${category}@daytime${dayTime}`,
           statusIssue
         })
       ),
@@ -139,8 +155,7 @@ const MyView = props => {
         ({ idIssue, name, category, dayTime, summary, statusIssue }) => ({
           idIssue,
           key: idIssue,
-          general_info:
-            `@projectname[${name}]@summary${summary}@category${category}@daytime${dayTime}`,
+          general_info: `@projectname[${name}]@summary${summary}@category${category}@daytime${dayTime}`,
           statusIssue
         })
       ),
@@ -150,8 +165,7 @@ const MyView = props => {
         ({ idIssue, name, category, dayTime, summary, statusIssue }) => ({
           idIssue,
           key: idIssue,
-          general_info:
-            `@projectname[${name}]@summary${summary}@category${category}@daytime${dayTime}`,
+          general_info: `@projectname[${name}]@summary${summary}@category${category}@daytime${dayTime}`,
           statusIssue
         })
       ),
@@ -202,7 +216,7 @@ const MyView = props => {
             header="Timeline"
             cols={cols.timeLine}
             data={dataSrc.timeLine}
-            pagination={false}
+            pagination={true}
             showHeader={false}
           />
         </Col>

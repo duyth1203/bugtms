@@ -8,6 +8,9 @@ class ReportIssueContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user_Id:
+        localStorageHelper.getItemLocalStorage("user") &&
+        localStorageHelper.getItemLocalStorage("user").id,
       project_id:
         (+props.selectedProject !== -1 && props.selectedProject) ||
         localStorageHelper.getItemLocalStorage("defaultProjectId") ||
@@ -38,6 +41,7 @@ class ReportIssueContainer extends Component {
     // TODO: validate data
     e.preventDefault();
     let {
+      user_Id,
       project_id,
       // attachment,
       category,
@@ -51,13 +55,17 @@ class ReportIssueContainer extends Component {
       resolution
     } = this.state;
 
-    if(summary.length < 1 || description.length < 1 || reporter.length < 1 || assign_to.length < 1) return message.warning(
-        "Please check if any required field was empty."
-      );
+    if (summary.length < 1 || description.length < 1 || reporter.length < 1)
+      return message.warning("Please check if any required field was empty.");
 
     if (!project_id || +project_id === -1)
       return message.error(
         "Sorry, no project selected so failed reporting the issue."
+      );
+
+    if (!user_Id)
+      return message.error(
+        "Sorry, cannot identify user ID. Please log out and log in again."
       );
 
     fetch("http://localhost:3001/issues", {
@@ -67,6 +75,7 @@ class ReportIssueContainer extends Component {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
+        user_Id,
         project_id,
         // attachment,
         category,
@@ -84,7 +93,7 @@ class ReportIssueContainer extends Component {
     }) // done, show result in message
       .then(response => response.json())
       .then(data => {
-        const { status, ok } = data;
+        const { status } = data;
         if (status === 0) {
           message.success("Successfully reported the issue.");
         } else {
