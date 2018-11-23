@@ -170,7 +170,7 @@ const MyView = props => {
         })
       ),
     timeLine: timeLine.map(({ id, username, idIssue, dayTime }) => ({
-      key: `${id}${idIssue}`,
+      key: `${id}$`,
       timeline: `@username${username}@idissue${idIssue}@daytime${dayTime}`
     }))
   };
