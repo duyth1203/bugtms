@@ -1,0 +1,41 @@
+.table__comment{
+  margin-bottom: 10px;
+}
+
+.table__comment-title {
+  margin: -11px;
+  padding-left: 16px;
+  position: relative;
+}
+
+.comment__action {
+  position: absolute;
+  top: 0;
+  right: 5px;
+}
+
+.comment__title-index {
+  font-weight: bold;
+}
+
+.comment__action-btn {
+  border: none;
+}
+
+.comment__action-btn:hover {
+  background: cornflowerblue;
+  color: white;
+}
+
+.comment__action-btn.ant-btn-danger {
+  background: transparent;
+}
+
+.comment__action-btn.ant-btn-danger:hover {
+  background: red;
+  color: white;
+}
+
+.table__comment th {
+  padding: 6px 16px !important;
+}

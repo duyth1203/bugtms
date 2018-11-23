@@ -1,0 +1,24 @@
+.page__login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page__login__form {
+  max-width: 440px;
+  text-align: center;
+  padding: 40px;
+}
+
+.page__login-logo {
+  max-width: 300px;
+  overflow: hidden;
+  margin: 0px auto 22px;
+}
+.page__login-logo img {
+  width: 100%;
+}
+
+.page__login__form form > * {
+  margin-bottom: 15px;
+}

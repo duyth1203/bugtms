@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "antd": "^3.9.2",
+    "jwt-decode": "^2.2.0",
+    "moment": "^2.22.2",
     "react": "^16.5.2",
     "react-app-rewired": "^1.6.2",
     "react-dom": "^16.5.2",
@@ -12,9 +14,12 @@
     "react-scripts": "1.1.5"
   },
   "scripts": {
-    "start": "react-app-rewired start",
     "build": "react-app-rewired build",
+    "start": "react-app-rewired start",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-app-rewired eject"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0"
   }
 }

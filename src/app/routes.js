@@ -1,57 +1,84 @@
-import React from 'react';
-import ChangeLogContainer from './screens/ChangeLog/ChangeLogContainer';
-import MyViewContainer from './screens/MyView/MyViewContainer';
-import NotFound from './screens/NotFound/NotFound';
-import RepoContainer from './screens/Repo/RepoContainer';
-import ReportIssueContainer from './screens/ReportIssue/ReportIssueContainer';
-import RoadMapContainer from './screens/RoadMap/RoadMapContainer';
-import ViewIssuesContainer from './screens/ViewIssues/ViewIssuesContainer';
-import WikiContainer from './screens/Wiki/WikiContainer';
+import React from "react";
+import DocsContainer from "./screens/Docs/DocsContainer";
+import MyProjectsContainer from "./screens/MyProjects/MyProjectsContainer";
+import MyViewContainer from "./screens/MyView/MyViewContainer";
+import NotFound from "./screens/NotFound/NotFound";
+import ReportIssueContainer from "./screens/ReportIssue/ReportIssueContainer";
+import SummaryContainer from "./screens/Summary/SummaryContainer";
+import ViewIssuesContainer from "./screens/ViewIssues/ViewIssuesContainer";
+import ViewIssueDetailsContainer from "./screens/ViewIssueDetails/ViewIssueDetailsContainer";
+import CommentContainer from "./screens/components/Comment/CommentContainer";
+import RedirectWrapper from "./screens/components/RedirectWrapper";
+import LogOut from "./screens/components/LogOut";
 
 const AppRoutes = [
   {
-    path: '/',
+    path: "/",
     exact: true,
-    component: () => <MyViewContainer />
+    isPrivate: true,
+    component: props => <MyProjectsContainer {...props} />
   },
   {
-    path: '/my-view',
-    exact: false,
-    component: () => <MyViewContainer />
+    path: "/my-view",
+    exact: true,
+    isPrivate: true,
+    component: props => <MyViewContainer {...props} />
   },
   {
-    path: '/change-log',
-    exact: false,
-    component: () => <ChangeLogContainer />
+    path: "/my-projects",
+    exact: true,
+    isPrivate: true,
+    component: props => <MyProjectsContainer {...props} />
   },
   {
-    path: '/repo',
-    exact: false,
-    component: () => <RepoContainer />
+    path: "/view-issues",
+    exact: true,
+    isPrivate: true,
+    component: props => <ViewIssuesContainer {...props} />
   },
   {
-    path: '/report-issue',
-    exact: false,
-    component: () => <ReportIssueContainer />
+    path: "/view-issues/:id",
+    exact: true,
+    isPrivate: true,
+    component: props => (
+      <React.Fragment>
+        <ViewIssueDetailsContainer {...props} />
+        <CommentContainer {...props} />
+      </React.Fragment>
+    )
   },
   {
-    path: '/road-map',
-    exact: false,
-    component: () => <RoadMapContainer />
+    path: "/report-issue",
+    exact: true,
+    isPrivate: true,
+    component: props => (
+      <RedirectWrapper>
+        <ReportIssueContainer {...props} />
+      </RedirectWrapper>
+    )
   },
   {
-    path: '/view-issues',
-    exact: false,
-    component: () => <ViewIssuesContainer />
+    path: "/summary",
+    exact: true,
+    isPrivate: true,
+    component: () => <SummaryContainer />
   },
   {
-    path: '/wiki',
-    exact: false,
-    component: () => <WikiContainer />
+    path: "/docs",
+    exact: true,
+    isPrivate: true,
+    component: () => <DocsContainer />
   },
   {
-    path: '',
+    path: "/log-out",
     exact: false,
+    isPrivate: false,
+    component: () => <LogOut />
+  },
+  {
+    path: "",
+    exact: false,
+    isPrivate: false,
     component: () => <NotFound />
   }
 ];
