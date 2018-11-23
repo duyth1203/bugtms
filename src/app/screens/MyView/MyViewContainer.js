@@ -126,8 +126,9 @@ class MyViewContainer extends Component {
           if (status === 0 && data) {
             const { timeLine: _timeLine } = data;
             const timeLine = _timeLine.map(
-              ({ id, username, idIssue, dayTime, status }) => ({
-                // id,
+              ({ id, userId, username, idIssue, dayTime, status }) => ({
+                id,
+                userId,
                 username,
                 idIssue,
                 dayTime,
@@ -249,8 +250,9 @@ class MyViewContainer extends Component {
           if (status === 0 && data) {
             const { timeLine: _timeLine } = data;
             const timeLine = _timeLine.map(
-              ({ id, username, idIssue, dayTime, status }) => ({
-                // id,
+              ({ id, userId, username, idIssue, dayTime, status }) => ({
+                id,
+                userId,
                 username,
                 idIssue,
                 dayTime,
