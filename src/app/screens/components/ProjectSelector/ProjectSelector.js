@@ -58,7 +58,7 @@ const ProjectSelector = props => {
     <h1>No project available</h1>
   ) : (
     <div className="app-content project-selector">
-      <h1>Choose a project to continue</h1>
+      <h1>Select Project</h1>
       <br />
       <Form onSubmit={onSubmit}>
         <FormItem {...formItemLayout} label="Project name">

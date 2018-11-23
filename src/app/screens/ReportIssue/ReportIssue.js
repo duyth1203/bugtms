@@ -53,7 +53,7 @@ const ReportIssue = props => {
 
   return (
     <div className="app-content">
-      <h1>Report issue details</h1>
+      <h1>Report Issue Details</h1>
 
       <div>
         <Button
@@ -178,11 +178,7 @@ const ReportIssue = props => {
           </Select>
         </FormItem>
         <FormItem {...tailFormItemLayout}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            onClick={() => onSubmit}
-          >
+          <Button type="primary" htmlType="submit" onClick={() => onSubmit}>
             Submit
           </Button>
         </FormItem>

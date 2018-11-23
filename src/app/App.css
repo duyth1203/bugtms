@@ -60,25 +60,25 @@
 }
 
 .resolved {
-  background: #f9ffef;
+  background: #d2f5b0;
 }
 
 .closed {
-  background: #efefef;
+  background: #c9ccc4;
 }
 
 .feedback {
-  background: #fcf7de;
+  background: #e3b7eb;
 }
 
 .confirmed {
-  background: #fff0e0;
+  background: #fff494;
 }
 
 .assigned {
-  background: #fff2f2;
+  background: #c2dfff;
 }
 
 .acknowledged {
-  background: #eaedff;
+  background: #ffcd85;
 }
