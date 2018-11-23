@@ -58,12 +58,14 @@ const MyView = props => {
   const renderPanelTimeLine = txt => {
     const usernameIndex = +txt.indexOf("@username") + "@username".length,
       issueIdIndex = +txt.indexOf("@idissue") + "@idissue".length,
-      dayTimeIndex = +txt.lastIndexOf("@daytime") + "@daytime".length;
+      dayTimeIndex = +txt.lastIndexOf("@daytime") + "@daytime".length,
+      statusIndex = +txt.lastIndexOf("@status") + "@status".length;
     // return if nothing found
     if (
       +usernameIndex - "@username".length === -1 &&
       +issueIdIndex - "@idissue".length === -1 &&
-      +dayTimeIndex - "@daytime".length === -1
+      +dayTimeIndex - "@daytime".length === -1 &&
+      +statusIndex - "@status".length === -1
     )
       return txt;
 
@@ -72,10 +74,11 @@ const MyView = props => {
         +issueIdIndex - "@idissue".length
       ),
       issueId = txt.substring(+issueIdIndex, +dayTimeIndex - "@daytime".length),
-      dayTime = txt.substring(+dayTimeIndex);
+      dayTime = txt.substring(+dayTimeIndex, +statusIndex - "@status".length),
+      status = txt.substring(+statusIndex);
     return (
       <span>
-        <b>{username}</b> commented on issue&nbsp;
+        <b>{username}</b> {status || "commented on"} issue&nbsp;
         <Link to={`/view-issues/${issueId}`}>{issueId}</Link>
         &nbsp;on&nbsp;{dayTime}
       </span>
@@ -169,15 +172,15 @@ const MyView = props => {
           statusIssue
         })
       ),
-    timeLine: timeLine.map(({ id, username, idIssue, dayTime }) => ({
+    timeLine: timeLine.map(({ id, username, idIssue, dayTime, status }) => ({
       key: `${id}$`,
-      timeline: `@username${username}@idissue${idIssue}@daytime${dayTime}`
+      timeline: `@username${username}@idissue${idIssue}@daytime${dayTime}@status${status}`
     }))
   };
 
   return (
     <div className="app-content">
-      <h1>My view</h1>
+      <h1>My View</h1>
       <Row gutter={16}>
         <Col
           xs={24}
