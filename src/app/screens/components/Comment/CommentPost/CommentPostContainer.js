@@ -1,66 +1,66 @@
 import React, { Component } from "react";
-import CommentPost from "./CommentPost";
+import { connect } from "react-redux";
 import message from "antd/lib/message";
+import CommentPost from "./CommentPost";
+import localStorageHelper from "../../../../../utils/localStorageHelper";
+import * as commentPostActions from "../../../../../redux/actions/commentPostActions";
 
 class CommentPostContainer extends Component {
-  constructor(props) {
-      super(props);
-      this.state = {
-          note_content: "",
-          idIssue:
-              (props.location.state && props.location.state) ||
-              props.location.pathname.substr(
-                  props.location.pathname.lastIndexOf("/") + 1
-              )
-      }
-  }
-
-  handleChange = e => {
-      const target = e.target;
-      const value = target.type === "checkbox" ? target.checked : target.value;
-      const name = target.name;
-      this.setState({
-          [name]: value
-      });
-  };
-
-  handlePostSucceed = () => {
-    message.success("Successfully posted comment.");
-    setTimeout(() => this.props.onReload(), 500);
-  }
-
   handleSubmit = e => {
-      e.preventDefault();
-      const { idIssue, note_content } = this.state;
-      const userId = localStorage && localStorage.getItem("user") && JSON.parse(localStorage.getItem("user")).id;
-      const defaultProjectId = +(localStorage && localStorage.getItem("defaultProjectId"));
-      if(!idIssue) return message.error("Cannot identify issue.");
-      if(!userId) return message.error(("Cannot identify user ID."));
-      if(note_content.length < 1) return message.warning("Please type in something before submitting.");
-      if(+defaultProjectId === -1) return message.warning("Please choose a specified project.");
-        
-      fetch(`http://localhost:3001/postnote/${defaultProjectId}/${userId}/${idIssue}`, {
-          method: "POST",
-          headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ note_content })
-      })
-          .then(response => response.json())
-          .then(data => this.handlePostSucceed())
-          .catch(err => message.error("Sorry, failed submitting issue note."));
+    e.preventDefault();
+    const { note_content } = this.props;
+    const issueId = this.props.location.pathname.substr(
+      this.props.location.pathname.lastIndexOf("/") + 1
+    );
+    const userId =
+      localStorageHelper.getItemLocalStorage("user") &&
+      localStorageHelper.getItemLocalStorage("user").id;
+    const defaultProjectId = +localStorageHelper.getItemLocalStorage(
+      "defaultProjectId"
+    );
+
+    if (!issueId) return message.error("Cannot identify issue.");
+    if (!userId) return message.error("Cannot identify user ID.");
+    if (note_content.length < 1)
+      return message.warning("Please type in something before submitting.");
+    if (defaultProjectId === -1)
+      return message.warning("Please choose a specified project.");
+
+    this.props.postCommentRequest(
+      {
+        note_content,
+        defaultProjectId,
+        userId,
+        issueId
+      },
+      () => setTimeout(() => this.props.onReload(), 500)
+    );
   };
 
   render() {
     return (
-        <div className="app-content">
-          <br/>
-          <h1>Reply</h1>
-          <CommentPost onSubmit={this.handleSubmit} onChange={this.handleChange}/>
-        </div>
+      <div className="app-content">
+        <br />
+        <h1>Reply</h1>
+        <CommentPost
+          onSubmit={this.handleSubmit}
+          onChange={this.props.handleCommentChange}
+        />
+      </div>
     );
   }
 }
 
-export default CommentPostContainer;
+const mapStateToProps = state => ({ ...state.commentPost });
+
+const mapDispatchToProps = dispatch => ({
+  postCommentRequest: (inputs, cb) =>
+    dispatch(commentPostActions.postCommentRequest(inputs, cb)),
+  handleCommentChange: event =>
+    dispatch(commentPostActions.handleCommentChange(event))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CommentPostContainer);

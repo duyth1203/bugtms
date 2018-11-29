@@ -18,10 +18,10 @@ class ProjectSelectorContainer extends Component {
 
     if (user && user.id) {
       fetch(`http://localhost:3001/myview/getProjectByUser/${user.id}`)
-        .then(response => response.json())
-        .then(datas => {
-          if (datas.status === 0) {
-            const projects = datas.data.Project.map(({ id, name }) => ({
+        .then(resp => resp.json())
+        .then(json => {
+          if (json.status === 0) {
+            const projects = json.data.Project.map(({ id, name }) => ({
               id,
               name
             }));

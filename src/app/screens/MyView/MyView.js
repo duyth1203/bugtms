@@ -210,7 +210,7 @@ const MyView = props => {
             header="Last 30 days"
             cols={cols.last30Days}
             data={dataSrc.last30Days}
-            pagination={false}
+            pagination={true}
             showHeader={false}
           />
         </Col>
