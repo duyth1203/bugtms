@@ -1,283 +1,28 @@
 import React, { Component } from "react";
-import message from "antd/lib/message";
+import { connect } from "react-redux";
 import MyView from "./MyView";
-import localStorageHelper from "../../../utils/localStorageHelper";
+import * as myViewActions from "../../../redux/actions/myViewActions";
 
 class MyViewContainer extends Component {
-  constructor() {
-    super();
-    this.state = {
-      projectId:
-        localStorageHelper.getItemLocalStorage("defaultProjectId") || -1,
-      userId:
-        localStorageHelper.getItemLocalStorage("user") &&
-        localStorageHelper.getItemLocalStorage("user").id,
-      issuesUnassign: [],
-      issuesIsResolve: [],
-      issuesLast30Days: [],
-      timeLine: []
-    };
-  }
-
   componentDidMount() {
-    const { projectId, userId } = this.state;
-    if (!projectId || !userId)
-      return message.error("Sorry, please try logging in again.");
-
-    if (+projectId === -1) {
-      fetch(`http://localhost:3001/myview/getUnassign/${userId}/1`)
-        .then(response => response.json())
-        .then(datas => {
-          const { status, data } = datas;
-          if (status === 0 && data) {
-            const { Unassign } = data;
-            const issuesUnassign = Unassign.map(
-              ({
-                name,
-                idIssue,
-                category,
-                statusIssue,
-                summary,
-                dayTime,
-                status
-              }) => ({
-                name,
-                idIssue,
-                category,
-                statusIssue,
-                summary,
-                dayTime,
-                status
-              })
-            );
-            this.setState({ issuesUnassign });
-          }
-        })
-        .catch(err =>
-          message.error("Sorry, failed loading unassigned issues.")
-        );
-
-      fetch(`http://localhost:3001/myview/getIsResolve/${userId}/1`)
-        .then(response => response.json())
-        .then(datas => {
-          const { status, data } = datas;
-          if (status === 0 && data) {
-            const { isResolve } = data;
-            const issuesIsResolve = isResolve.map(
-              ({
-                name,
-                idIssue,
-                category,
-                statusIssue,
-                summary,
-                dayTime,
-                status
-              }) => ({
-                name,
-                idIssue,
-                category,
-                statusIssue,
-                summary,
-                dayTime,
-                status
-              })
-            );
-            this.setState({ issuesIsResolve });
-          }
-        })
-        .catch(err => message.error("Sorry, failed loading solved issues."));
-
-      fetch(`http://localhost:3001/myview/getLast30Days/${userId}/1`)
-        .then(response => response.json())
-        .then(datas => {
-          const { status, data } = datas;
-          if (status === 0 && data) {
-            const { Last30days } = data;
-            const issuesLast30Days = Last30days.map(
-              ({
-                name,
-                idIssue,
-                category,
-                statusIssue,
-                summary,
-                dayTime,
-                status
-              }) => ({
-                name,
-                idIssue,
-                category,
-                statusIssue,
-                summary,
-                dayTime,
-                status
-              })
-            );
-            this.setState({ issuesLast30Days });
-          }
-        })
-        .catch(err =>
-          message.error("Sorry, failed loading issues from last 30 days.")
-        );
-
-      fetch(`http://localhost:3001/myview/timeline/${userId}/1`)
-        .then(response => response.json())
-        .then(datas => {
-          const { status, data } = datas;
-          if (status === 0 && data) {
-            const { timeLine: _timeLine } = data;
-            const timeLine = _timeLine.map(
-              ({ id, userId, username, idIssue, dayTime, status }) => ({
-                id,
-                userId,
-                username,
-                idIssue,
-                dayTime,
-                status
-              })
-            );
-            this.setState({ timeLine });
-          }
-        })
-        .catch(err => message.error("Sorry, failed loading timeline."));
-    } else {
-      fetch(
-        `http://localhost:3001/myview/getUnassignP/${userId}/1/${projectId}`
-      )
-        .then(response => response.json())
-        .then(datas => {
-          const { status, data } = datas;
-          if (status === 0 && data) {
-            const { Unassign } = data;
-            const issuesUnassign = Unassign.map(
-              ({
-                name,
-                idIssue,
-                category,
-                statusIssue,
-                summary,
-                dayTime,
-                status
-              }) => ({
-                name,
-                idIssue,
-                category,
-                statusIssue,
-                summary,
-                dayTime,
-                status
-              })
-            );
-            this.setState({ issuesUnassign });
-          }
-        })
-        .catch(err =>
-          message.error("Sorry, failed loading unassigned issues.")
-        );
-
-      fetch(
-        `http://localhost:3001/myview/getIsResolveP/${userId}/1/${projectId}`
-      )
-        .then(response => response.json())
-        .then(datas => {
-          const { status, data } = datas;
-          if (status === 0 && data) {
-            const { isResolve } = data;
-            const issuesIsResolve = isResolve.map(
-              ({
-                name,
-                idIssue,
-                category,
-                statusIssue,
-                summary,
-                dayTime,
-                status
-              }) => ({
-                name,
-                idIssue,
-                category,
-                statusIssue,
-                summary,
-                dayTime,
-                status
-              })
-            );
-            this.setState({ issuesIsResolve });
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          message.error("Sorry, failed loading solved issues.");
-        });
-
-      fetch(
-        `http://localhost:3001/myview/getLast30DaysP/${userId}/1/${projectId}`
-      )
-        .then(response => response.json())
-        .then(datas => {
-          const { status, data } = datas;
-          if (status === 0 && data) {
-            const { Last30days } = data;
-            const issuesLast30Days = Last30days.map(
-              ({
-                name,
-                idIssue,
-                category,
-                statusIssue,
-                summary,
-                dayTime,
-                status
-              }) => ({
-                name,
-                idIssue,
-                category,
-                statusIssue,
-                summary,
-                dayTime,
-                status
-              })
-            );
-            this.setState({ issuesLast30Days });
-          }
-        })
-        .catch(err =>
-          message.error("Sorry, failed loading issues from last 30 days.")
-        );
-
-      fetch(`http://localhost:3001/myview/timelineP/${userId}/1/${projectId}`)
-        .then(response => response.json())
-        .then(datas => {
-          const { status, data } = datas;
-          if (status === 0 && data) {
-            const { timeLine: _timeLine } = data;
-            const timeLine = _timeLine.map(
-              ({ id, userId, username, idIssue, dayTime, status }) => ({
-                id,
-                userId,
-                username,
-                idIssue,
-                dayTime,
-                status
-              })
-            );
-            this.setState({ timeLine });
-          }
-        })
-        .catch(err => message.error("Sorry, failed loading timeline."));
-    }
+    this.props.fetchUnAssignedIssuesRequest();
+    this.props.fetchResolvedIssuesRequest();
+    this.props.fetchLast30DaysIssuesRequest();
+    this.props.fetchTimeLineRequest();
   }
 
   render() {
     const {
-      issuesUnassign,
-      issuesIsResolve,
+      issuesUnassigned,
+      issuesResolved,
       issuesLast30Days,
       timeLine
-    } = this.state;
+    } = this.props;
 
     return (
       <MyView
-        issuesUnassign={issuesUnassign}
-        issuesIsResolve={issuesIsResolve}
+        issuesUnassign={issuesUnassigned}
+        issuesIsResolve={issuesResolved}
         issuesLast30Days={issuesLast30Days}
         timeLine={timeLine}
       />
@@ -285,4 +30,19 @@ class MyViewContainer extends Component {
   }
 }
 
-export default MyViewContainer;
+const mapStateToProps = state => ({ ...state.myView });
+
+const mapDispatchToProps = dispatch => ({
+  fetchUnAssignedIssuesRequest: () =>
+    dispatch(myViewActions.fetchUnAssignedIssuesRequest()),
+  fetchResolvedIssuesRequest: () =>
+    dispatch(myViewActions.fetchResolvedIssuesRequest()),
+  fetchLast30DaysIssuesRequest: () =>
+    dispatch(myViewActions.fetchLast30DaysIssuesRequest()),
+  fetchTimeLineRequest: () => dispatch(myViewActions.fetchTimeLineRequest())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MyViewContainer);

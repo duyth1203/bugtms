@@ -63,7 +63,9 @@ class PanelSkeleton extends Component {
         dataSource={data}
         footer={footer}
         pagination={pagination}
-        rowClassName={(record, index) => data[index].statusIssue && data[index].statusIssue.toLowerCase()}
+        rowClassName={(record, index) =>
+          data[index].statusIssue && data[index].statusIssue.toLowerCase()
+        }
         showHeader={showHeader}
         title={title}
       />

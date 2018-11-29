@@ -1,0 +1,2 @@
+export const DELETE_A_COMMENT = "DELETE_A_COMMENT";
+export const EDIT_A_COMMENT = "EDIT_A_COMMENT";
