@@ -1,37 +1,22 @@
 import React, { Component } from "react";
-import message from "antd/lib/message";
+import { connect } from "react-redux";
 import ACommentViewContainer from "./ACommentViewContainer";
+import * as commentViewActions from "../../../../../redux/actions/commentViewActions";
 
 class CommentViewContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      idIssue:
-        (props.location.state && props.location.state) ||
-        props.location.pathname.substr(
-          props.location.pathname.lastIndexOf("/") + 1
-        ),
-      comments: []
-    };
-  }
-
   fetchComments = () => {
-      const { idIssue } = this.state;
-      fetch(`http://localhost:3001/getnote/${idIssue}`)
-          .then(response => response.json())
-          .then(comments => {
-              if(comments && comments.length > 0) this.setState({ comments });
-              else this.setState({comments: []});
-          })
-          .catch(err => message.error("Sorry, failed loading comments."));
-  }
+    const issueId = this.props.location.pathname.substr(
+      this.props.location.pathname.lastIndexOf("/") + 1
+    );
+    return this.props.fetchCommentsRequest(issueId);
+  };
 
   componentDidMount() {
     this.fetchComments();
   }
 
-  componentDidUpdate(prevProps,  prevState) {
-    if(prevProps.willReload !== this.props.willReload) {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.willReload !== this.props.willReload) {
       this.fetchComments();
     }
   }
@@ -41,8 +26,7 @@ class CommentViewContainer extends Component {
   };
 
   render() {
-    const { comments } = this.state;
-    const _comments = comments && comments.map(comment => (
+    const comments = this.props.comments.map(comment => (
       <ACommentViewContainer
         key={comment.id}
         comment={comment}
@@ -54,10 +38,21 @@ class CommentViewContainer extends Component {
       <div className="app-content">
         <br />
         <h1>Comments</h1>
-        {_comments}
+        {comments}
       </div>
     );
   }
 }
 
-export default CommentViewContainer;
+const mapStateToProps = state => ({ ...state.commentView });
+
+const mapDispatchToProps = dispatch => ({
+  fetchCommentsRequest: issueId => {
+    dispatch(commentViewActions.fetchCommentsRequest(issueId));
+  }
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CommentViewContainer);

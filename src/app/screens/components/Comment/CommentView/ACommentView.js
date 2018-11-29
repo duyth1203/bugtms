@@ -3,18 +3,21 @@ import Table from "antd/lib/table";
 import Button from "antd/lib/button";
 import Icon from "antd/lib/icon";
 import Popconfirm from "antd/lib/popconfirm";
+import localStorageHelper from "../../../../../utils/localStorageHelper";
 import "./CommentView.css";
 
 const ACommentView = props => {
   const {
-    comment: { id, username, date_submitted, note_content, userId },
+    comment: { id, username, date_submitted, note_content, userId }
   } = props;
 
   const onDelete = () => {
     props.onDelete();
   };
 
-  const _userId = localStorage && localStorage.getItem("user") && JSON.parse(localStorage.getItem("user")).id;
+  const _userId =
+    localStorageHelper.getItemLocalStorage("user") &&
+    localStorageHelper.getItemLocalStorage("user").id;
 
   const dataSrc = [{ summary: username, note_content }],
     title = () => (
@@ -23,17 +26,23 @@ const ACommentView = props => {
           <span className="comment__title-index">#{id}</span> on{" "}
           {date_submitted}
         </div>
-          { userId === _userId && (<div className="comment__action">
-          <Popconfirm title="Are you sure?" onConfirm={onDelete}>
-            <Button size="small" className="comment__action-btn" type="danger">
-              <Icon type="delete" />
+        {userId === _userId && (
+          <div className="comment__action">
+            <Popconfirm title="Are you sure?" onConfirm={onDelete}>
+              <Button
+                size="small"
+                className="comment__action-btn"
+                type="danger"
+              >
+                <Icon type="delete" />
+              </Button>
+            </Popconfirm>
+            <span>&nbsp; </span>
+            <Button size="small" className="comment__action-btn">
+              <Icon type="edit" />
             </Button>
-          </Popconfirm>
-          <span>&nbsp; </span>
-          <Button size="small" className="comment__action-btn">
-            <Icon type="edit" />
-          </Button>
-        </div>)}
+          </div>
+        )}
       </div>
     );
 

@@ -1,37 +1,21 @@
 import React, { Component } from "react";
-import message from "antd/lib/message";
+import { connect } from "react-redux";
 import ViewIssueDetails from "./ViewIssueDetails";
+import * as viewIssueDetailsActions from "../../../redux/actions/viewIssueDetailsActions";
 
 class ViewIssueDetailsContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      idIssue:
-        (props.location.state && props.location.state) ||
-        props.location.pathname.substr(
-          props.location.pathname.lastIndexOf("/") + 1
-        )
-    };
-  }
-
   componentDidMount() {
-    const { idIssue } = this.state;
+    const issueId =
+      (this.props.location.state && this.props.location.state) ||
+      this.props.location.pathname.substr(
+        this.props.location.pathname.lastIndexOf("/") + 1
+      );
 
-    fetch(`http://localhost:3001/issues/${idIssue}`)
-      .then(response => response.json())
-      .then(datas => {
-        const { status, data } = datas;
-        if (status === 0 && data) {
-          this.setState({ issueDetails: data });
-        } else {
-          message.error("Sorry, failed loading issue details.");
-        }
-      })
-      .catch(err => message.error("Sorry, failed loading issue details."));
+    this.props.fetchIssueDetailsRequest(issueId);
   }
 
   render() {
-    const { issueDetails } = this.state;
+    const { issueDetails } = this.props;
     return (
       <div className="app-content">
         <ViewIssueDetails issueDetails={issueDetails} />
@@ -40,4 +24,14 @@ class ViewIssueDetailsContainer extends Component {
   }
 }
 
-export default ViewIssueDetailsContainer;
+const mapStateToProps = state => ({ issueDetails: state.viewIssueDetails });
+
+const mapDispatchToProps = dispatch => ({
+  fetchIssueDetailsRequest: issueId =>
+    dispatch(viewIssueDetailsActions.fetchIssueDetailsRequest(issueId))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ViewIssueDetailsContainer);

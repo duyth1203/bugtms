@@ -1,48 +1,26 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import message from "antd/lib/message";
 import ReportIssue from "./ReportIssue";
 import localStorageHelper from "../../../utils/localStorageHelper";
-import moment from "moment";
+import * as reportIssueActions from "../../../redux/actions/reportIssueActions";
 
 class ReportIssueContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user_Id:
-        localStorageHelper.getItemLocalStorage("user") &&
-        localStorageHelper.getItemLocalStorage("user").id,
-      project_id:
-        (+props.selectedProject !== -1 && props.selectedProject) ||
-        localStorageHelper.getItemLocalStorage("defaultProjectId") ||
-        -1,
-      // attachment: "",
-      category: "General",
-      statusIssue: "New",
-      summary: "",
-      description: "",
-      severity: "1",
-      priority: "Normal",
-      assign_to: "",
-      reporter: "",
-      resolution: "Open"
-    };
-  }
-
   handleChange = e => {
-    const target = e.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value
-    });
+    this.props.handleFormInputChange(e);
   };
 
   handleSubmit = e => {
-    // TODO: validate data
     e.preventDefault();
+    const defaultProjectId =
+        (+this.props.selectedProject !== -1 && this.props.selectedProject) ||
+        localStorageHelper.getItemLocalStorage("defaultProjectId") ||
+        -1,
+      userId =
+        localStorageHelper.getItemLocalStorage("user") &&
+        localStorageHelper.getItemLocalStorage("user").id;
+
     let {
-      user_Id,
-      project_id,
       // attachment,
       category,
       statusIssue,
@@ -53,54 +31,35 @@ class ReportIssueContainer extends Component {
       assign_to,
       reporter,
       resolution
-    } = this.state;
+    } = this.props;
 
     if (summary.length < 1 || description.length < 1 || reporter.length < 1)
       return message.warning("Please check if any required field was empty.");
 
-    if (!project_id || +project_id === -1)
+    if (!defaultProjectId || +defaultProjectId === -1)
       return message.error(
         "Sorry, no project selected so failed reporting the issue."
       );
 
-    if (!user_Id)
+    if (!userId)
       return message.error(
         "Sorry, cannot identify user ID. Please log out and log in again."
       );
 
-    fetch("http://localhost:3001/issues", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        user_Id,
-        project_id,
-        // attachment,
-        category,
-        statusIssue,
-        last_updated: moment().format("YYYYMMDD") + "000000",
-        data_submitted: moment().format("YYYYMMDD") + "000000",
-        summary,
-        description,
-        severity,
-        priority,
-        assign_to,
-        reporter,
-        resolution
-      })
-    }) // done, show result in message
-      .then(response => response.json())
-      .then(data => {
-        const { status } = data;
-        if (status === 0) {
-          message.success("Successfully reported the issue.");
-        } else {
-          message.error("Sorry, failed reporting the issue.");
-        }
-      })
-      .catch(err => message.error("Sorry, failed reporting the issue."));
+    this.props.postIssueRequest({
+      userId,
+      defaultProjectId,
+      // attachment,
+      category,
+      statusIssue,
+      summary,
+      description,
+      severity,
+      priority,
+      assign_to,
+      reporter,
+      resolution
+    });
   };
 
   handleChooseProject = () => {
@@ -120,4 +79,18 @@ class ReportIssueContainer extends Component {
   }
 }
 
-export default ReportIssueContainer;
+const mapStateToProps = state => ({
+  ...state.reportIssue
+});
+
+const mapDispatchToProps = dispatch => ({
+  postIssueRequest: inputs =>
+    dispatch(reportIssueActions.postIssueRequest(inputs)),
+  handleFormInputChange: e =>
+    dispatch(reportIssueActions.handleFormInputChange(e))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ReportIssueContainer);

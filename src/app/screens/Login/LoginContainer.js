@@ -49,7 +49,7 @@ class LoginContainer extends Component {
         pwd: password
       })
     })
-      .then(response => response.json())
+      .then(resp => resp.json())
       .then(data => {
         if (data.auth) {
           this.handleLogInSucceed(data);
