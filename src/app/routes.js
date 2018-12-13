@@ -3,6 +3,7 @@ import MyProjectsContainer from "./screens/MyProjects/MyProjectsContainer";
 import MyViewContainer from "./screens/MyView/MyViewContainer";
 import NotFound from "./screens/NotFound/NotFound";
 import ReportIssueContainer from "./screens/ReportIssue/ReportIssueContainer";
+import UpdateIssueContainer from "./screens/UpdateIssue/UpdateIssueContainer";
 import ViewIssuesContainer from "./screens/ViewIssues/ViewIssuesContainer";
 import ViewIssueDetailsContainer from "./screens/ViewIssueDetails/ViewIssueDetailsContainer";
 import CommentContainer from "./screens/components/Comment/CommentContainer";
@@ -57,6 +58,12 @@ const AppRoutes = [
         <ReportIssueContainer {...props} />
       </ProjectSelectRedirector>
     )
+  },
+  {
+    path: "/update-issue",
+    exact: true,
+    isPrivate: true,
+    component: props => <UpdateIssueContainer {...props} />
   },
   {
     path: "/my-projects/:id",

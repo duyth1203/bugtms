@@ -6,6 +6,16 @@ import ReportIssue from "./ReportIssue";
 import * as reportIssueActions from "../../../redux/actions/reportIssueActions";
 
 class ReportIssueContainer extends Component {
+  componentDidMount = () => {
+    const projectId =
+      (+this.props.selectedProject !== -1 && this.props.selectedProject) ||
+      +getCookie("defaultProjectId") ||
+      -1;
+    if (projectId === -1)
+      return message.error("Sorry, failed identifying project.");
+    this.props.fetchUsersRequest(projectId);
+  };
+
   handleChange = e => {
     this.props.handleFormInputChange(e);
   };
@@ -19,7 +29,6 @@ class ReportIssueContainer extends Component {
       userId = getCookie("user") && JSON.parse(getCookie("user")).id;
 
     let {
-      // attachment,
       category,
       statusIssue,
       summary,
@@ -31,7 +40,13 @@ class ReportIssueContainer extends Component {
       resolution
     } = this.props;
 
-    if (summary.length < 1 || description.length < 1 || reporter.length < 1)
+    if (reporter.length < 1)
+      reporter =
+        (getCookie("user") && JSON.parse(getCookie("user")).username) || "";
+    if (reporter.length < 1)
+      return message.warning("Please choose a reporter.");
+
+    if (summary.length < 1 || description.length < 1)
       return message.warning("Please check if any required field was empty.");
 
     if (!defaultProjectId || defaultProjectId === -1)
@@ -48,7 +63,6 @@ class ReportIssueContainer extends Component {
       issueId,
       userId,
       defaultProjectId,
-      // attachment,
       category,
       statusIssue,
       summary,
@@ -86,6 +100,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   postIssueRequest: inputs =>
     dispatch(reportIssueActions.postIssueRequest(inputs)),
+  fetchUsersRequest: projectId =>
+    dispatch(reportIssueActions.fetchUsersRequest(projectId)),
   handleFormInputChange: e =>
     dispatch(reportIssueActions.handleFormInputChange(e))
 });

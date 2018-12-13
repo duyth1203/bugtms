@@ -10,7 +10,8 @@ const initState = {
   priority: "Normal",
   assign_to: "",
   reporter: "",
-  resolution: "Open"
+  resolution: "Open",
+  users: []
 };
 
 const reportIssueReducer = (state = initState, action) => {
@@ -20,6 +21,20 @@ const reportIssueReducer = (state = initState, action) => {
       return state;
     case reportIssueActionTypes.POST_ISSUE_ERROR:
       message.error("Sorry, failed reporting the issue.");
+      return state;
+    case reportIssueActionTypes.UPDATE_ISSUE_SUCCESS:
+      message.success("Successfully updated the issue.");
+      return state;
+    case reportIssueActionTypes.UPDATE_ISSUE_ERROR:
+      message.error("Sorry, failed updating the issue.");
+      return state;
+    case reportIssueActionTypes.FETCH_USERS_SUCCESS:
+      const { users } = action;
+      return { ...state, users };
+    case reportIssueActionTypes.FETCH_USERS_EMPTY:
+      return { ...state, users: [] };
+    case reportIssueActionTypes.FETCH_USERS_ERROR:
+      message.error("Sorry, failed fetching user list");
       return state;
     case reportIssueActionTypes.HANDLE_FORM_INPUT_CHANGE:
       const {

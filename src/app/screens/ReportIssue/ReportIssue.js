@@ -1,4 +1,5 @@
 import React from "react";
+import { getCookie } from "tiny-cookie";
 import Button from "antd/lib/button";
 import Input from "antd/lib/input";
 import Form from "antd/lib/form";
@@ -52,18 +53,15 @@ const ReportIssue = props => {
     props.onSubmit(e, issueId);
   };
 
-  const {
-    // attachment,
-    category,
-    statusIssue,
-    summary,
-    description,
-    severity,
-    priority,
-    assign_to,
-    reporter,
-    resolution
-  } = props;
+  const userOpts =
+    props.users &&
+    props.users.map(user => (
+      <Option key={user.id} value={user.username}>
+        {user.name}
+      </Option>
+    ));
+
+  const username = getCookie("user") && JSON.parse(getCookie("user")).username;
 
   return (
     <div className="app-content">
@@ -83,7 +81,7 @@ const ReportIssue = props => {
       <Form onSubmit={onSubmit}>
         <FormItem {...formItemLayout} label="Category">
           <Select
-            defaultValue={category || "General"}
+            defaultValue="General"
             onChange={value => {
               onSelectChange("category", value);
             }}
@@ -96,7 +94,7 @@ const ReportIssue = props => {
         </FormItem>
         <FormItem {...formItemLayout} label="Status">
           <Select
-            defaultValue={statusIssue || "New"}
+            defaultValue="New"
             onChange={value => {
               onSelectChange("statusIssue", value);
             }}
@@ -112,7 +110,6 @@ const ReportIssue = props => {
         </FormItem>
         <FormItem {...formItemLayout} label="Summary *">
           <Input
-            value={summary || ""}
             placeholder="Some brief words describing the issue"
             onChange={onChange}
             name="summary"
@@ -120,7 +117,6 @@ const ReportIssue = props => {
         </FormItem>
         <FormItem {...formItemLayout} label="Description *">
           <Input.TextArea
-            value={description || ""}
             rows={4}
             placeholder="Details on what is going on..."
             onChange={onChange}
@@ -129,7 +125,7 @@ const ReportIssue = props => {
         </FormItem>
         <FormItem {...formItemLayout} label="Severity">
           <Select
-            defaultValue={severity || "1"}
+            defaultValue="1"
             onChange={value => {
               onSelectChange("severity", value);
             }}
@@ -142,7 +138,7 @@ const ReportIssue = props => {
         </FormItem>
         <FormItem {...formItemLayout} label="Priority">
           <Select
-            defaultValue={priority || "Normal"}
+            defaultValue="Normal"
             onChange={value => {
               onSelectChange("priority", value);
             }}
@@ -155,24 +151,27 @@ const ReportIssue = props => {
           </Select>
         </FormItem>
         <FormItem {...formItemLayout} label="Assign to">
-          <Input
-            value={assign_to || ""}
-            placeholder="The person assigned to this issue"
-            onChange={onChange}
-            name="assign_to"
-          />
+          <Select
+            onChange={value => {
+              onSelectChange("assign_to", value);
+            }}
+          >
+            {userOpts}
+          </Select>
         </FormItem>
         <FormItem {...formItemLayout} label="Reporter">
-          <Input
-            value={reporter || ""}
-            placeholder="The person reported this issue"
-            onChange={onChange}
-            name="reporter"
-          />
+          <Select
+            defaultValue={username}
+            onChange={value => {
+              onSelectChange("reporter", value);
+            }}
+          >
+            {userOpts}
+          </Select>
         </FormItem>
         <FormItem {...formItemLayout} label="Resolution">
           <Select
-            defaultValue={resolution || "Open"}
+            defaultValue="Open"
             onChange={value => {
               onSelectChange("resolution", value);
             }}

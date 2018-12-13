@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import { getCookie, setCookie } from "tiny-cookie";
 import message from "antd/lib/message";
 import ProjectSelector from "./ProjectSelector";
@@ -12,7 +13,6 @@ class ProjectSelectorContainer extends Component {
 
   componentDidMount() {
     const userId = getCookie("user") && JSON.parse(getCookie("user")).id;
-
     if (userId) {
       fetch(`http://localhost:3001/myview/getProjectByUser/${userId}`)
         .then(resp => resp.json())
@@ -30,7 +30,7 @@ class ProjectSelectorContainer extends Component {
             message.error("Sorry, failed loading projects.");
           }
         })
-        .catch(err => message.error("Sorry, failed loading projects."));
+        .catch(error => message.error("Sorry, failed loading projects."));
     }
   }
 
@@ -62,4 +62,4 @@ class ProjectSelectorContainer extends Component {
   }
 }
 
-export default ProjectSelectorContainer;
+export default withRouter(ProjectSelectorContainer);
