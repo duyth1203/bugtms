@@ -1,9 +1,9 @@
 import React from "react";
+import { getCookie } from "tiny-cookie";
 import Table from "antd/lib/table";
 import Button from "antd/lib/button";
 import Icon from "antd/lib/icon";
 import Popconfirm from "antd/lib/popconfirm";
-import localStorageHelper from "../../../../../utils/localStorageHelper";
 import "./CommentView.css";
 
 const ACommentView = props => {
@@ -15,9 +15,7 @@ const ACommentView = props => {
     props.onDelete();
   };
 
-  const _userId =
-    localStorageHelper.getItemLocalStorage("user") &&
-    localStorageHelper.getItemLocalStorage("user").id;
+  const _userId = getCookie("user") && JSON.parse(getCookie("user")).id;
 
   const dataSrc = [{ summary: username, note_content }],
     title = () => (

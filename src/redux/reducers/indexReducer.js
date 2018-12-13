@@ -6,6 +6,7 @@ import reportIssueReducer from "./reportIssueReducer";
 import viewIssueDetailsReducer from "./viewIssueDetailsReducer";
 import commentViewReducer from "./commentViewReducer";
 import commentPostReducer from "./commentPostReducer";
+import newProjectReducer from "./newProjectReducer";
 
 const indexReducer = combineReducers({
   myProjects: myProjectsReducer,
@@ -14,7 +15,8 @@ const indexReducer = combineReducers({
   reportIssue: reportIssueReducer,
   viewIssueDetails: viewIssueDetailsReducer,
   commentView: commentViewReducer,
-  commentPost: commentPostReducer
+  commentPost: commentPostReducer,
+  newProject: newProjectReducer
 });
 
 export default indexReducer;

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { getCookie } from "tiny-cookie";
 import message from "antd/lib/message";
 import ReportIssue from "./ReportIssue";
-import localStorageHelper from "../../../utils/localStorageHelper";
 import * as reportIssueActions from "../../../redux/actions/reportIssueActions";
 
 class ReportIssueContainer extends Component {
@@ -10,15 +10,13 @@ class ReportIssueContainer extends Component {
     this.props.handleFormInputChange(e);
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e, issueId) => {
     e.preventDefault();
     const defaultProjectId =
         (+this.props.selectedProject !== -1 && this.props.selectedProject) ||
-        localStorageHelper.getItemLocalStorage("defaultProjectId") ||
+        +getCookie("defaultProjectId") ||
         -1,
-      userId =
-        localStorageHelper.getItemLocalStorage("user") &&
-        localStorageHelper.getItemLocalStorage("user").id;
+      userId = getCookie("user") && JSON.parse(getCookie("user")).id;
 
     let {
       // attachment,
@@ -36,7 +34,7 @@ class ReportIssueContainer extends Component {
     if (summary.length < 1 || description.length < 1 || reporter.length < 1)
       return message.warning("Please check if any required field was empty.");
 
-    if (!defaultProjectId || +defaultProjectId === -1)
+    if (!defaultProjectId || defaultProjectId === -1)
       return message.error(
         "Sorry, no project selected so failed reporting the issue."
       );
@@ -47,6 +45,7 @@ class ReportIssueContainer extends Component {
       );
 
     this.props.postIssueRequest({
+      issueId,
       userId,
       defaultProjectId,
       // attachment,
@@ -70,6 +69,7 @@ class ReportIssueContainer extends Component {
     return (
       <React.Fragment>
         <ReportIssue
+          {...this.props}
           onSubmit={this.handleSubmit}
           onChange={this.handleChange}
           onChooseProject={this.handleChooseProject}

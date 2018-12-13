@@ -1,23 +1,20 @@
 import React, { Component } from "react";
+import { getCookie, setCookie } from "tiny-cookie";
 import message from "antd/lib/message";
 import ProjectSelector from "./ProjectSelector";
-import localStorageHelper from "../../../../utils/localStorageHelper";
 
 class ProjectSelectorContainer extends Component {
-  constructor() {
-    super();
-    this.state = {
-      selectedProject: -1,
-      markAsDefault: false,
-      projects: []
-    };
-  }
+  state = {
+    selectedProject: -1,
+    markAsDefault: false,
+    projects: []
+  };
 
   componentDidMount() {
-    const user = localStorageHelper.getItemLocalStorage("user");
+    const userId = getCookie("user") && JSON.parse(getCookie("user")).id;
 
-    if (user && user.id) {
-      fetch(`http://localhost:3001/myview/getProjectByUser/${user.id}`)
+    if (userId) {
+      fetch(`http://localhost:3001/myview/getProjectByUser/${userId}`)
         .then(resp => resp.json())
         .then(json => {
           if (json.status === 0) {
@@ -49,10 +46,7 @@ class ProjectSelectorContainer extends Component {
   handleSubmit = () => {
     const { selectedProject, markAsDefault } = this.state;
     if (selectedProject && markAsDefault)
-      localStorageHelper.setItemLocalStorage(
-        "defaultProjectId",
-        selectedProject
-      );
+      setCookie("defaultProjectId", selectedProject);
     this.props.onRedirect(selectedProject);
   };
 

@@ -15,26 +15,19 @@ const initState = {
 
 const reportIssueReducer = (state = initState, action) => {
   switch (action.type) {
-    case reportIssueActionTypes.POST_ISSUE:
-      const {
-        result: { status }
-      } = action;
-      switch (status) {
-        case 0:
-          message.success("Successfully reported the issue.");
-          return state;
-        default:
-          message.error("Sorry, failed reporting the issue.");
-          return state;
-      }
-
+    case reportIssueActionTypes.POST_ISSUE_SUCCESS:
+      message.success("Successfully reported the issue.");
+      return state;
+    case reportIssueActionTypes.POST_ISSUE_ERROR:
+      message.error("Sorry, failed reporting the issue.");
+      return state;
     case reportIssueActionTypes.HANDLE_FORM_INPUT_CHANGE:
-      const { event } = action;
-      const target = event.target;
-      const value = target.type === "checkbox" ? target.checked : target.value;
-      const name = target.name;
+      const {
+        event: { target }
+      } = action;
+      const value = target.type === "checkbox" ? target.checked : target.value,
+        name = target.name;
       return { ...state, [name]: value };
-
     default:
       return state;
   }

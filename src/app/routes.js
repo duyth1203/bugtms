@@ -1,15 +1,16 @@
 import React from "react";
-import DocsContainer from "./screens/Docs/DocsContainer";
 import MyProjectsContainer from "./screens/MyProjects/MyProjectsContainer";
 import MyViewContainer from "./screens/MyView/MyViewContainer";
 import NotFound from "./screens/NotFound/NotFound";
 import ReportIssueContainer from "./screens/ReportIssue/ReportIssueContainer";
-import SummaryContainer from "./screens/Summary/SummaryContainer";
 import ViewIssuesContainer from "./screens/ViewIssues/ViewIssuesContainer";
 import ViewIssueDetailsContainer from "./screens/ViewIssueDetails/ViewIssueDetailsContainer";
 import CommentContainer from "./screens/components/Comment/CommentContainer";
-import RedirectWrapper from "./screens/components/RedirectWrapper";
+import ProjectSelectRedirector from "./screens/components/ProjectSelectRedirector";
 import LogOut from "./screens/components/LogOut";
+import LoginContainer from "./screens/Login/LoginContainer";
+import NewProjectContainer from "./screens/NewProject/NewProjectContainer";
+import ProjectSelectRedirect from "./screens/components/ProjectSelectRedirect";
 
 const AppRoutes = [
   {
@@ -52,28 +53,34 @@ const AppRoutes = [
     exact: true,
     isPrivate: true,
     component: props => (
-      <RedirectWrapper>
+      <ProjectSelectRedirector>
         <ReportIssueContainer {...props} />
-      </RedirectWrapper>
+      </ProjectSelectRedirector>
     )
   },
   {
-    path: "/summary",
+    path: "/my-projects/:id",
     exact: true,
     isPrivate: true,
-    component: () => <SummaryContainer />
+    component: props => <ProjectSelectRedirect {...props} />
   },
   {
-    path: "/docs",
+    path: "/new-project",
     exact: true,
     isPrivate: true,
-    component: () => <DocsContainer />
+    component: props => <NewProjectContainer {...props} />
   },
   {
     path: "/log-out",
     exact: false,
     isPrivate: false,
     component: () => <LogOut />
+  },
+  {
+    path: "/login",
+    exact: true,
+    isPrivate: false,
+    component: props => <LoginContainer {...props} />
   },
   {
     path: "",

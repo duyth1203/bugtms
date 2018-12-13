@@ -6,6 +6,7 @@ import * as viewIssueDetailsActions from "../../../redux/actions/viewIssueDetail
 class ViewIssueDetailsContainer extends Component {
   componentDidMount() {
     const issueId =
+      this.props.issueId ||
       (this.props.location.state && this.props.location.state) ||
       this.props.location.pathname.substr(
         this.props.location.pathname.lastIndexOf("/") + 1
