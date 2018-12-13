@@ -5,7 +5,9 @@ import * as viewIssuesActions from "../../../redux/actions/viewIssuesActions";
 
 class ViewIssuesContainer extends Component {
   componentDidMount() {
-    this.props.fetchIssues();
+    const projectId =
+      this.props.location.state && this.props.location.state.projectId;
+    this.props.fetchIssuesRequest(projectId);
   }
 
   render() {
@@ -19,7 +21,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchIssues: () => dispatch(viewIssuesActions.fetchIssuesRequest())
+  fetchIssuesRequest: projectId =>
+    dispatch(viewIssuesActions.fetchIssuesRequest(projectId))
 });
 
 export default connect(

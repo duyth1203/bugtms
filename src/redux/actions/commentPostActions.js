@@ -1,14 +1,9 @@
 import * as commentPostActionTypes from "../constants/commentPostActionTypes";
 
-export const postComment = result => ({
-  type: commentPostActionTypes.POST_COMMENT,
-  result
-});
-
 export const postCommentRequest = (inputs, cb) => dispatch => {
   const { note_content, defaultProjectId, userId, issueId } = inputs;
 
-  return fetch(
+  fetch(
     `http://localhost:3001/postnote/${defaultProjectId}/${userId}/${issueId}`,
     {
       method: "POST",
@@ -22,9 +17,18 @@ export const postCommentRequest = (inputs, cb) => dispatch => {
     .then(resp => resp.json())
     .then(json => {
       cb && cb();
-      dispatch(postComment(json));
+      const {
+        result: { status }
+      } = json;
+      if (status !== 404)
+        dispatch({
+          type: commentPostActionTypes.POST_COMMENT_SUCCESS
+        });
+      else dispatch({ type: commentPostActionTypes.POST_COMMENT_ERROR });
     })
-    .catch(err => dispatch(postComment({ status: 500 })));
+    .catch(error =>
+      dispatch({ type: commentPostActionTypes.POST_COMMENT_ERROR, error })
+    );
 };
 
 export const handleCommentChange = event => ({

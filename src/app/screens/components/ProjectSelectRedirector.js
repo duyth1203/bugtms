@@ -1,19 +1,16 @@
 import React, { Component } from "react";
+import { getCookie } from "tiny-cookie";
 import ProjectSelectorContainer from "./ProjectSelector/ProjectSelectorContainer";
-import localStorageHelper from "../../../utils/localStorageHelper";
 
-class RedirectWrapper extends Component {
-  constructor() {
-    super();
-    this.state = {
-      selectedProject: -1,
-      willRedirect:
-        !localStorageHelper.getItemLocalStorage("defaultProjectId") ||
-        (localStorageHelper.getItemLocalStorage("defaultProjectId") &&
-          +localStorageHelper.getItemLocalStorage("defaultProjectId") !== -1) ||
-        false
-    };
-  }
+class ProjectSelectRedirector extends Component {
+  state = {
+    selectedProject: -1,
+    willRedirect:
+      !getCookie("defaultProjectId") ||
+      (getCookie("defaultProjectId") &&
+        +getCookie("defaultProjectId") !== -1) ||
+      false
+  };
 
   handleRedirect = selectedProject => {
     this.setState({ willRedirect: true, selectedProject });
@@ -46,4 +43,4 @@ class RedirectWrapper extends Component {
   }
 }
 
-export default RedirectWrapper;
+export default ProjectSelectRedirector;

@@ -1,11 +1,6 @@
 import moment from "moment";
 import * as reportIssueActionTypes from "../constants/reportIssueActionTypes";
 
-export const postIssue = result => ({
-  type: reportIssueActionTypes.POST_ISSUE,
-  result
-});
-
 export const postIssueRequest = inputs => dispatch => {
   const {
     defaultProjectId,
@@ -21,7 +16,7 @@ export const postIssueRequest = inputs => dispatch => {
     resolution
   } = inputs;
 
-  return fetch("http://localhost:3001/issues", {
+  fetch("http://localhost:3001/issues", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -45,8 +40,22 @@ export const postIssueRequest = inputs => dispatch => {
     })
   })
     .then(resp => resp.json())
-    .then(json => dispatch(postIssue(json)))
-    .catch(err => dispatch(postIssue({ status: 500 })));
+    .then(json => {
+      const {
+        result: { status }
+      } = json;
+      switch (status) {
+        case 0:
+          dispatch({ type: reportIssueActionTypes.POST_ISSUE_SUCCESS });
+          break;
+        default:
+          dispatch({ type: reportIssueActionTypes.POST_ISSUE_ERROR });
+          break;
+      }
+    })
+    .catch(error =>
+      dispatch({ type: reportIssueActionTypes.POST_ISSUE_ERROR, error })
+    );
 };
 
 export const handleFormInputChange = event => ({

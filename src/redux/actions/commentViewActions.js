@@ -1,19 +1,17 @@
 import * as commentViewActionTypes from "../constants/commentViewActionTypes";
 
-export const fetchComments = result => ({
-  type: commentViewActionTypes.FETCH_COMMENTS,
-  result
-});
-
 export const fetchCommentsRequest = issueId => dispatch =>
   fetch(`http://localhost:3001/getnote/${issueId}`)
     .then(resp => resp.json())
-    .then(json =>
-      dispatch(
-        fetchComments({
-          data: json,
-          status: json.length > 0 ? 0 : 404
-        })
-      )
-    )
-    .catch(err => dispatch(fetchComments({ status: 500 })));
+    .then(json => {
+      // ! API return no status code
+      if (json.length > 0)
+        dispatch({
+          type: commentViewActionTypes.FETCH_COMMENTS_SUCCESS,
+          comments: json
+        });
+      else dispatch({ type: commentViewActionTypes.FETCH_COMMENTS_EMPTY });
+    })
+    .catch(error =>
+      dispatch({ type: commentViewActionTypes.FETCH_COMMENTS_ERROR, error })
+    );

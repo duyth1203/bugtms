@@ -48,8 +48,22 @@ const ReportIssue = props => {
   };
 
   const onSubmit = e => {
-    props.onSubmit(e);
+    const { issueId } = props;
+    props.onSubmit(e, issueId);
   };
+
+  const {
+    // attachment,
+    category,
+    statusIssue,
+    summary,
+    description,
+    severity,
+    priority,
+    assign_to,
+    reporter,
+    resolution
+  } = props;
 
   return (
     <div className="app-content">
@@ -67,16 +81,9 @@ const ReportIssue = props => {
       <br />
 
       <Form onSubmit={onSubmit}>
-        {/* <FormItem {...formItemLayout} label="Attachments">
-          <Input
-            placeholder="Attachment files as optional"
-            onChange={onChange}
-            name="attachment"
-          />
-        </FormItem> */}
         <FormItem {...formItemLayout} label="Category">
           <Select
-            defaultValue="General"
+            defaultValue={category || "General"}
             onChange={value => {
               onSelectChange("category", value);
             }}
@@ -89,7 +96,7 @@ const ReportIssue = props => {
         </FormItem>
         <FormItem {...formItemLayout} label="Status">
           <Select
-            defaultValue="New"
+            defaultValue={statusIssue || "New"}
             onChange={value => {
               onSelectChange("statusIssue", value);
             }}
@@ -103,15 +110,17 @@ const ReportIssue = props => {
             <Option value="Acknowledged">Acknowledged</Option>
           </Select>
         </FormItem>
-        <FormItem {...formItemLayout} label="Summary">
+        <FormItem {...formItemLayout} label="Summary *">
           <Input
+            value={summary || ""}
             placeholder="Some brief words describing the issue"
             onChange={onChange}
             name="summary"
           />
         </FormItem>
-        <FormItem {...formItemLayout} label="Description">
+        <FormItem {...formItemLayout} label="Description *">
           <Input.TextArea
+            value={description || ""}
             rows={4}
             placeholder="Details on what is going on..."
             onChange={onChange}
@@ -120,7 +129,7 @@ const ReportIssue = props => {
         </FormItem>
         <FormItem {...formItemLayout} label="Severity">
           <Select
-            defaultValue="1"
+            defaultValue={severity || "1"}
             onChange={value => {
               onSelectChange("severity", value);
             }}
@@ -133,7 +142,7 @@ const ReportIssue = props => {
         </FormItem>
         <FormItem {...formItemLayout} label="Priority">
           <Select
-            defaultValue="Normal"
+            defaultValue={priority || "Normal"}
             onChange={value => {
               onSelectChange("priority", value);
             }}
@@ -147,6 +156,7 @@ const ReportIssue = props => {
         </FormItem>
         <FormItem {...formItemLayout} label="Assign to">
           <Input
+            value={assign_to || ""}
             placeholder="The person assigned to this issue"
             onChange={onChange}
             name="assign_to"
@@ -154,6 +164,7 @@ const ReportIssue = props => {
         </FormItem>
         <FormItem {...formItemLayout} label="Reporter">
           <Input
+            value={reporter || ""}
             placeholder="The person reported this issue"
             onChange={onChange}
             name="reporter"
@@ -161,7 +172,7 @@ const ReportIssue = props => {
         </FormItem>
         <FormItem {...formItemLayout} label="Resolution">
           <Select
-            defaultValue="Open"
+            defaultValue={resolution || "Open"}
             onChange={value => {
               onSelectChange("resolution", value);
             }}

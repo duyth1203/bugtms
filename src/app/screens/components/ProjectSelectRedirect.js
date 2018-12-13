@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import localStorageHelper from "../../../utils/localStorageHelper";
+import { setCookie } from "tiny-cookie";
 
 const ProjectSelectRedirect = props => {
   const newDefaultProjectId = props.location.pathname.substr(
@@ -8,10 +8,7 @@ const ProjectSelectRedirect = props => {
   );
 
   if (!Number.isNaN(newDefaultProjectId))
-    localStorageHelper.setItemLocalStorage(
-      "defaultProjectId",
-      +newDefaultProjectId
-    );
+    setCookie("defaultProjectId", newDefaultProjectId);
 
   props.history.goBack();
 

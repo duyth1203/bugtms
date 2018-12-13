@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { getCookie } from "tiny-cookie";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import PanelSkeleton from "../components/PanelSkeleton/PanelSkeleton";
-import localStorageHelper from "../../../utils/localStorageHelper";
 
 const MyView = props => {
   const { issuesUnassign, issuesIsResolve, issuesLast30Days, timeLine } = props;
@@ -38,7 +38,7 @@ const MyView = props => {
       dayTime = txt.substring(+dayTimeIndex);
     return (
       <div>
-        {+localStorageHelper.getItemLocalStorage("defaultProjectId") === -1 ? (
+        {+getCookie("defaultProjectId") === -1 ? (
           <span>
             {projectName} <b>{summary}</b>
           </span>
@@ -78,7 +78,8 @@ const MyView = props => {
       status = txt.substring(+statusIndex);
     return (
       <span>
-        <b>{username}</b> {status || "commented on"} issue&nbsp;
+        <b>{username}</b> {(status && status.toLowerCase()) || "commented on"}{" "}
+        issue&nbsp;
         <Link to={`/view-issues/${issueId}`}>{issueId}</Link>
         &nbsp;on&nbsp;{dayTime}
       </span>
