@@ -3,9 +3,7 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import MainLayout from "./components/layouts/MainLayout";
 import AppRoutes from "./routes";
-import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
-import LoginContainer from "./screens/Login/LoginContainer";
-import ProjectSelectRedirect from "./screens/components/ProjectSelectRedirect";
+import PrivateRoute from "./components/PrivateRoute";
 
 class App extends Component {
   AppScreens = AppRoutes.map(
@@ -22,18 +20,7 @@ class App extends Component {
     return (
       <Router>
         <MainLayout>
-          <Switch>
-            <Route
-              path="/login"
-              render={props => <LoginContainer {...props} />}
-            />
-            <Route
-              path="/my-projects/:id"
-              exact
-              render={props => <ProjectSelectRedirect {...props} />}
-            />
-            {this.AppScreens}
-          </Switch>
+          <Switch>{this.AppScreens}</Switch>
         </MainLayout>
       </Router>
     );

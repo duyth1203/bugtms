@@ -7,18 +7,14 @@ const initState = {
 
 const commentViewReducer = (state = initState, action) => {
   switch (action.type) {
-    case commentViewActionTypes.FETCH_COMMENTS:
-      const { status, data } = action.result;
-      switch (status) {
-        case 0:
-          return { comments: data };
-        case 404:
-          return { comments: [] };
-        default:
-          message.error("Sorry, failed fetching comments.");
-          return state;
-      }
-
+    case commentViewActionTypes.FETCH_COMMENTS_SUCCESS:
+      const { comments } = action;
+      return { comments };
+    case commentViewActionTypes.FETCH_COMMENTS_EMPTY:
+      return { comments: [] };
+    case commentViewActionTypes.FETCH_COMMENTS_ERROR:
+      message.error("Sorry, failed fetching comments.");
+      return state;
     default:
       return state;
   }

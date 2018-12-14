@@ -1,27 +1,41 @@
+import { getCookie } from "tiny-cookie";
 import * as viewIssuesActionTypes from "../constants/viewIssuesActionTypes";
-import localStorageHelper from "../../utils/localStorageHelper";
 
-export const fetchIssues = (issues, defaultProjectId) => ({
-  type: viewIssuesActionTypes.FETCH_ISSUES,
-  issues,
-  defaultProjectId
-});
-
-export const fetchIssuesRequest = () => dispatch => {
-  const defaultProjectId = localStorageHelper.getItemLocalStorage(
-      "defaultProjectId"
-    ),
-    userId =
-      localStorageHelper.getItemLocalStorage("user") &&
-      localStorageHelper.getItemLocalStorage("user").id;
+export const fetchIssuesRequest = projectId => dispatch => {
+  const defaultProjectId = projectId || +getCookie("defaultProjectId"),
+    userId = getCookie("user") && JSON.parse(getCookie("user")).id;
+  if (!userId)
+    return dispatch({
+      type: viewIssuesActionTypes.FETCH_ISSUES_ERROR
+    });
 
   const fetchFrom =
     defaultProjectId === -1
       ? `http://localhost:3001/issues/getByProjectOfUser/${userId}`
       : `http://localhost:3001/issues/getByProject/${defaultProjectId}`;
 
-  return fetch(fetchFrom)
+  fetch(fetchFrom)
     .then(resp => resp.json())
-    .then(json => dispatch(fetchIssues(json, +defaultProjectId)))
-    .catch(err => dispatch(fetchIssues({ status: 500 })));
+    .then(json => {
+      const { status, data } = json;
+      switch (status) {
+        case 0:
+          dispatch({
+            type: viewIssuesActionTypes.FETCH_ISSUES_SUCCESS,
+            data,
+            defaultProjectId
+          });
+          break;
+        // 404: empty
+        default:
+          dispatch({ type: viewIssuesActionTypes.FETCH_ISSUES_EMPTY });
+          break;
+      }
+    })
+    .catch(error =>
+      dispatch({
+        type: viewIssuesActionTypes.FETCH_ISSUES_ERROR,
+        error
+      })
+    );
 };

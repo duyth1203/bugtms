@@ -24,7 +24,6 @@ const ViewIssueDetails = props => {
 
   const dataSrc_5 = [
     {
-      key: 1,
       id,
       project_id,
       category,
@@ -35,7 +34,6 @@ const ViewIssueDetails = props => {
 
   const dataSrc_4_1 = [
     {
-      key: 2,
       statusIssue,
       resolution,
       reporter,
@@ -45,7 +43,6 @@ const ViewIssueDetails = props => {
 
   const dataSrc_4_2 = [
     {
-      key: 3,
       priority,
       severity,
       summary,
@@ -131,12 +128,19 @@ const ViewIssueDetails = props => {
     <div>
       <h1>Issue Details</h1>
       <Link to="/view-issues">
-        <p>&larr; &nbsp; view all issues</p>
+        <span>&larr; &nbsp; view all issues</span>
       </Link>
-
       <Table columns={cols_5} dataSource={dataSrc_5} pagination={false} />
       <Table columns={cols_4_1} dataSource={dataSrc_4_1} pagination={false} />
       <Table columns={cols_4_2} dataSource={dataSrc_4_2} pagination={false} />
+      <Link
+        to={{
+          pathname: "/update-issue",
+          state: { ...dataSrc_4_1[0], ...dataSrc_4_2[0], ...dataSrc_5[0] }
+        }}
+      >
+        <span>update issue &rarr;</span>
+      </Link>
     </div>
   );
 };

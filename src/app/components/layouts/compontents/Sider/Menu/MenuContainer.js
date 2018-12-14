@@ -1,7 +1,7 @@
 import React, { Component } from "react";
+import { getCookie } from "tiny-cookie";
 import AppSiderMenu from "./Menu";
 import authHelper from "../../../../../../utils/authHelper";
-import localStorageHelper from "../../../../../../utils/localStorageHelper";
 
 class AppSiderMenuContainer extends Component {
   fetchProjectByUser = () => {
@@ -9,7 +9,7 @@ class AppSiderMenuContainer extends Component {
 
     const { links } = this.props.links;
     links.forEach(async link => {
-      const user = localStorageHelper.getItemLocalStorage("user");
+      const user = JSON.parse(getCookie("user"));
       if (link.fetchFrom && user && user.id) {
         try {
           let subs = await fetch(link.fetchFrom + user.id);
@@ -40,16 +40,9 @@ class AppSiderMenuContainer extends Component {
   }
 
   render() {
-    const { links, position } = this.props.links,
-      { currentSelected } = this.props;
-      
-    return (
-      <AppSiderMenu
-        links={links}
-        position={position}
-        currentSelected={currentSelected}
-      />
-    );
+    const { links, position } = this.props.links;
+
+    return <AppSiderMenu links={links} position={position} />;
   }
 }
 

@@ -1,4 +1,5 @@
 import React from "react";
+import { getCookie } from "tiny-cookie";
 import Button from "antd/lib/button";
 import Input from "antd/lib/input";
 import Form from "antd/lib/form";
@@ -48,32 +49,26 @@ const ReportIssue = props => {
   };
 
   const onSubmit = e => {
-    props.onSubmit(e);
+    const { issueId } = props;
+    props.onSubmit(e, issueId);
   };
+
+  const userOpts =
+    props.users &&
+    props.users.map(user => (
+      <Option key={user.id} value={user.username}>
+        {user.name}
+      </Option>
+    ));
+
+  const username = getCookie("user") && JSON.parse(getCookie("user")).username;
 
   return (
     <div className="app-content">
       <h1>Report Issue Details</h1>
-
-      <div>
-        <Button
-          size="small"
-          onClick={props.onChooseProject}
-          className="section__report-btn"
-        >
-          &larr; &nbsp; another project
-        </Button>
-      </div>
       <br />
 
       <Form onSubmit={onSubmit}>
-        {/* <FormItem {...formItemLayout} label="Attachments">
-          <Input
-            placeholder="Attachment files as optional"
-            onChange={onChange}
-            name="attachment"
-          />
-        </FormItem> */}
         <FormItem {...formItemLayout} label="Category">
           <Select
             defaultValue="General"
@@ -103,14 +98,14 @@ const ReportIssue = props => {
             <Option value="Acknowledged">Acknowledged</Option>
           </Select>
         </FormItem>
-        <FormItem {...formItemLayout} label="Summary">
+        <FormItem {...formItemLayout} label="Summary *">
           <Input
             placeholder="Some brief words describing the issue"
             onChange={onChange}
             name="summary"
           />
         </FormItem>
-        <FormItem {...formItemLayout} label="Description">
+        <FormItem {...formItemLayout} label="Description *">
           <Input.TextArea
             rows={4}
             placeholder="Details on what is going on..."
@@ -146,18 +141,23 @@ const ReportIssue = props => {
           </Select>
         </FormItem>
         <FormItem {...formItemLayout} label="Assign to">
-          <Input
-            placeholder="The person assigned to this issue"
-            onChange={onChange}
-            name="assign_to"
-          />
+          <Select
+            onChange={value => {
+              onSelectChange("assign_to", value);
+            }}
+          >
+            {userOpts}
+          </Select>
         </FormItem>
         <FormItem {...formItemLayout} label="Reporter">
-          <Input
-            placeholder="The person reported this issue"
-            onChange={onChange}
-            name="reporter"
-          />
+          <Select
+            defaultValue={username}
+            onChange={value => {
+              onSelectChange("reporter", value);
+            }}
+          >
+            {userOpts}
+          </Select>
         </FormItem>
         <FormItem {...formItemLayout} label="Resolution">
           <Select

@@ -1,32 +1,56 @@
+import { getCookie } from "tiny-cookie";
 import * as myProjectActionTypes from "../constants/myProjectActionTypes";
-import localStorageHelper from "../../utils/localStorageHelper";
-
-export const fetchActiveProjects = activeProjects => ({
-  type: myProjectActionTypes.FETCH_ACTIVE_PROJECT,
-  activeProjects
-});
 
 export const fetchActiveProjectsRequest = () => dispatch => {
-  const user = localStorageHelper.getItemLocalStorage("user");
+  const userId = getCookie("user") && JSON.parse(getCookie("user")).id;
+  if (!userId) return;
 
-  return fetch(`http://localhost:3001/myproject/active/${user.id}`)
-    .then(resp => resp.json())
-    .then(json => dispatch(fetchActiveProjects(json)))
-    .catch(err => dispatch(fetchActiveProjects({ status: 500 })));
-};
-
-export const fetchClosedProjects = closedProjects => ({
-  type: myProjectActionTypes.FETCH_CLOSED_PROJECT,
-  closedProjects
-});
-
-export const fetchClosedProjectsRequest = () => dispatch => {
-  const user = localStorageHelper.getItemLocalStorage("user");
-
-  return fetch(`http://localhost:3001/myproject/closed/${user.id}`)
+  fetch(`http://localhost:3001/myproject/active/${userId}`)
     .then(resp => resp.json())
     .then(json => {
-      dispatch(fetchClosedProjects(json));
+      const { status, data: projects } = json;
+      if (status === 0)
+        dispatch({
+          type: myProjectActionTypes.FETCH_ACTIVE_PROJECT_SUCCESS,
+          projects
+        });
+      else
+        dispatch({
+          type: myProjectActionTypes.FETCH_ACTIVE_PROJECT_EMPTY
+        });
     })
-    .catch(err => dispatch(fetchClosedProjects({ status: 500 })));
+    .catch(error =>
+      dispatch(
+        {
+          type: myProjectActionTypes.FETCH_ACTIVE_PROJECT_ERROR
+        },
+        error
+      )
+    );
+};
+
+export const fetchClosedProjectsRequest = () => dispatch => {
+  const userId = getCookie("user") && JSON.parse(getCookie("user")).id;
+  if (!userId) return;
+
+  fetch(`http://localhost:3001/myproject/closed/${userId}`)
+    .then(resp => resp.json())
+    .then(json => {
+      const { status, data: projects } = json;
+      if (status === 0)
+        dispatch({
+          type: myProjectActionTypes.FETCH_ACTIVE_PROJECT_SUCCESS,
+          projects
+        });
+      else
+        dispatch({
+          type: myProjectActionTypes.FETCH_CLOSED_PROJECT_EMPTY
+        });
+    })
+    .catch(error =>
+      dispatch({
+        type: myProjectActionTypes.FETCH_CLOSED_PROJECT_ERROR,
+        error
+      })
+    );
 };

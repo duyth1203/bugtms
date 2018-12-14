@@ -27,16 +27,10 @@ const AppSiderLinks = [
         label: "Report Issue"
       },
       {
-        to: "/summary",
+        to: "/new-project",
         exact: "true",
         icon: "radar-chart",
-        label: "Summary"
-      },
-      {
-        to: "/docs",
-        exact: "true",
-        icon: "book",
-        label: "Docs"
+        label: "New project"
       }
     ]
   },

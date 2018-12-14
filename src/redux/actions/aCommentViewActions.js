@@ -1,10 +1,5 @@
 import * as aCommentViewActionTypes from "../constants/aCommentViewActionTypes";
 
-export const deleteAComment = result => ({
-  type: aCommentViewActionTypes.DELETE_A_COMMENT,
-  result
-});
-
 export const deleteACommentRequest = (noteId, cb) => dispatch =>
   fetch(`http://localhost:3001/deletenote/${noteId}`, {
     method: "DELETE"
@@ -12,6 +7,13 @@ export const deleteACommentRequest = (noteId, cb) => dispatch =>
     .then(resp => resp.json())
     .then(json => {
       cb && cb();
-      dispatch(deleteAComment(json));
+      const {
+        result: { status }
+      } = json;
+      if (status !== 404)
+        dispatch({ type: aCommentViewActionTypes.DELETE_A_COMMENT_SUCCESS });
+      else dispatch({ type: aCommentViewActionTypes.DELETE_A_COMMENT_ERROR });
     })
-    .catch(err => dispatch(deleteAComment({ status: 500 })));
+    .catch(error =>
+      dispatch({ type: aCommentViewActionTypes.DELETE_A_COMMENT_ERROR }, error)
+    );

@@ -1,9 +1,10 @@
 import React from "react";
+import { getCookie } from "tiny-cookie";
+import moment from "moment";
 import Table from "antd/lib/table";
 import Button from "antd/lib/button";
 import Icon from "antd/lib/icon";
 import Popconfirm from "antd/lib/popconfirm";
-import localStorageHelper from "../../../../../utils/localStorageHelper";
 import "./CommentView.css";
 
 const ACommentView = props => {
@@ -15,16 +16,14 @@ const ACommentView = props => {
     props.onDelete();
   };
 
-  const _userId =
-    localStorageHelper.getItemLocalStorage("user") &&
-    localStorageHelper.getItemLocalStorage("user").id;
+  const _userId = getCookie("user") && JSON.parse(getCookie("user")).id;
 
   const dataSrc = [{ summary: username, note_content }],
     title = () => (
       <div className="table__comment-title">
         <div className="comment__title">
           <span className="comment__title-index">#{id}</span> on{" "}
-          {date_submitted}
+          {moment(new Date(date_submitted)).format("YYYY-MM-DD")}
         </div>
         {userId === _userId && (
           <div className="comment__action">
@@ -37,10 +36,6 @@ const ACommentView = props => {
                 <Icon type="delete" />
               </Button>
             </Popconfirm>
-            <span>&nbsp; </span>
-            <Button size="small" className="comment__action-btn">
-              <Icon type="edit" />
-            </Button>
           </div>
         )}
       </div>

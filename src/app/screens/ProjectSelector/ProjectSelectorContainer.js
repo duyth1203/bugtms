@@ -1,23 +1,26 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import { getCookie, setCookie } from "tiny-cookie";
 import message from "antd/lib/message";
 import ProjectSelector from "./ProjectSelector";
-import localStorageHelper from "../../../../utils/localStorageHelper";
 
 class ProjectSelectorContainer extends Component {
-  constructor() {
-    super();
-    this.state = {
-      selectedProject: -1,
-      markAsDefault: false,
-      projects: []
-    };
-  }
+  state = {
+    selectedProject: -1,
+    markAsDefault: false,
+    projects: []
+  };
 
   componentDidMount() {
-    const user = localStorageHelper.getItemLocalStorage("user");
+    if (+getCookie("defaultProjectId") !== -1)
+      return this.props.history.push({
+        pathname: `/report-issue`,
+        projectId: getCookie("defaultProjectId")
+      });
 
-    if (user && user.id) {
-      fetch(`http://localhost:3001/myview/getProjectByUser/${user.id}`)
+    const userId = getCookie("user") && JSON.parse(getCookie("user")).id;
+    if (userId) {
+      fetch(`http://localhost:3001/myview/getProjectByUser/${userId}`)
         .then(resp => resp.json())
         .then(json => {
           if (json.status === 0) {
@@ -33,7 +36,7 @@ class ProjectSelectorContainer extends Component {
             message.error("Sorry, failed loading projects.");
           }
         })
-        .catch(err => message.error("Sorry, failed loading projects."));
+        .catch(error => message.error("Sorry, failed loading projects."));
     }
   }
 
@@ -47,13 +50,12 @@ class ProjectSelectorContainer extends Component {
   };
 
   handleSubmit = () => {
-    const { selectedProject, markAsDefault } = this.state;
-    if (selectedProject && markAsDefault)
-      localStorageHelper.setItemLocalStorage(
-        "defaultProjectId",
-        selectedProject
-      );
-    this.props.onRedirect(selectedProject);
+    const { selectedProject: projectId, markAsDefault } = this.state;
+    if (projectId && markAsDefault) setCookie("defaultProjectId", projectId);
+    this.props.history.push({
+      pathname: `/report-issue/`,
+      state: { projectId }
+    });
   };
 
   render() {
@@ -68,4 +70,4 @@ class ProjectSelectorContainer extends Component {
   }
 }
 
-export default ProjectSelectorContainer;
+export default withRouter(ProjectSelectorContainer);

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { getCookie } from "tiny-cookie";
 import message from "antd/lib/message";
 import CommentPost from "./CommentPost";
-import localStorageHelper from "../../../../../utils/localStorageHelper";
 import * as commentPostActions from "../../../../../redux/actions/commentPostActions";
 
 class CommentPostContainer extends Component {
@@ -12,12 +12,8 @@ class CommentPostContainer extends Component {
     const issueId = this.props.location.pathname.substr(
       this.props.location.pathname.lastIndexOf("/") + 1
     );
-    const userId =
-      localStorageHelper.getItemLocalStorage("user") &&
-      localStorageHelper.getItemLocalStorage("user").id;
-    const defaultProjectId = +localStorageHelper.getItemLocalStorage(
-      "defaultProjectId"
-    );
+    const userId = getCookie("user") && JSON.parse(getCookie("user")).id;
+    const defaultProjectId = +getCookie("defaultProjectId");
 
     if (!issueId) return message.error("Cannot identify issue.");
     if (!userId) return message.error("Cannot identify user ID.");

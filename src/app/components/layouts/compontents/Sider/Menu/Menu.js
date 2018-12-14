@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import { getCookie } from "tiny-cookie";
 import Menu from "antd/lib/menu";
 import Icon from "antd/lib/icon";
 import authHelper from "../../../../../../utils/authHelper";
@@ -34,14 +35,6 @@ const AppSiderMenuItem = (key, link) => {
 };
 
 class AppSiderMenu extends Component {
-  constructor(props) {
-    super(props);
-    // console.log(props.currentSelected);
-    this.state = {
-      currentSelected: props.currentSelected
-    };
-  }
-
   handleClick = e => {
     this.setState({
       currentSelected: e.key
@@ -49,17 +42,54 @@ class AppSiderMenu extends Component {
   };
 
   render() {
+    const { position, links } = this.props;
+    let currentSelected = "";
+
+    // select current selected menu
+    if (position === "top") {
+      // remove the first "/" e.g "/my-projects"
+      let rootPath = this.props.location.pathname.substring(1).split("/")[0];
+      if (rootPath === "") rootPath = "my-projects";
+      for (let i = 0; i < links.length; i++) {
+        const link = links[i];
+        if (link.to === `/${rootPath}`) {
+          currentSelected = link.label;
+          break;
+        }
+      }
+    } else if (position === "bottom") {
+      const defaultProjectId = +getCookie("defaultProjectId") || -1;
+      if (defaultProjectId === -1) currentSelected = "All";
+      else {
+        for (let i = 0; i < links.length; i++) {
+          const subLinks = links[i].sub;
+          for (let i = 0; i < subLinks.length; i++) {
+            const subLink = subLinks[i];
+            if (subLink.to) {
+              const subLinkId = subLink.to.substr(
+                subLink.to.lastIndexOf("/") + 1
+              );
+              if (defaultProjectId === +subLinkId) {
+                currentSelected = subLink.label;
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+
     return (
       <Menu
         mode="vertical"
-        className={`menu ${this.props.position}-0`}
+        className={`menu ${position}-0`}
         onClick={this.handleClick}
-        selectedKeys={[this.state.currentSelected]}
+        selectedKeys={[currentSelected]}
       >
-        {this.props.links.map(link => AppSiderMenuItem(link.label, link))}
+        {links.map(link => AppSiderMenuItem(link.label, link))}
       </Menu>
     );
   }
 }
 
-export default AppSiderMenu;
+export default withRouter(AppSiderMenu);

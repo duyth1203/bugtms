@@ -10,132 +10,116 @@ const initState = {
 
 const myViewReducer = (state = initState, action) => {
   switch (action.type) {
-    case myViewActionTypes.FETCH_UNASSIGNED_ISSUES:
+    case myViewActionTypes.FETCH_UNASSIGNED_ISSUES_SUCCESS:
       const {
-        issues: { status: unassignedStatus, data: unassignedData }
+        issues: { Unassign }
       } = action;
-      switch (unassignedStatus) {
-        case 0:
-          const { Unassign } = unassignedData;
-          const issuesUnassigned = Unassign.map(
-            ({
-              name,
-              idIssue,
-              category,
-              statusIssue,
-              summary,
-              dayTime,
-              status
-            }) => ({
-              name,
-              idIssue,
-              category,
-              statusIssue,
-              summary,
-              dayTime,
-              status
-            })
-          );
-          return { ...state, issuesUnassigned };
-        case 404:
-          return { ...state, issuesUnassigned: [] };
-        default:
-          message.error("Sorry, failed loading unassigned issues.");
-          return state;
-      }
+      const issuesUnassigned = Unassign.map(
+        ({
+          name,
+          idIssue,
+          category,
+          statusIssue,
+          summary,
+          dayTime,
+          status
+        }) => ({
+          name,
+          idIssue,
+          category,
+          statusIssue,
+          summary,
+          dayTime,
+          status
+        })
+      );
+      return { ...state, issuesUnassigned };
+    case myViewActionTypes.FETCH_UNASSIGNED_ISSUES_EMPTY:
+      return { ...state, issuesUnassigned: [] };
+    case myViewActionTypes.FETCH_UNASSIGNED_ISSUES_ERROR:
+      message.error("Sorry, failed loading unassigned issues.");
+      return state;
 
-    case myViewActionTypes.FETCH_RESOLVED_ISSUES:
+    case myViewActionTypes.FETCH_RESOLVED_ISSUES_SUCCESS:
       const {
-        issues: { status: resolvedStatus, data: resolvedData }
+        issues: { isResolve }
       } = action;
-      switch (resolvedStatus) {
-        case 0:
-          const { isResolve } = resolvedData;
-          const issuesResolved = isResolve.map(
-            ({
-              name,
-              idIssue,
-              category,
-              statusIssue,
-              summary,
-              dayTime,
-              status
-            }) => ({
-              name,
-              idIssue,
-              category,
-              statusIssue,
-              summary,
-              dayTime,
-              status
-            })
-          );
-          return { ...state, issuesResolved };
-        case 404:
-          return { ...state, issuesResolved: [] };
-        default:
-          message.error("Sorry, failed loading resolved issues.");
-          return state;
-      }
+      const issuesResolved = isResolve.map(
+        ({
+          name,
+          idIssue,
+          category,
+          statusIssue,
+          summary,
+          dayTime,
+          status
+        }) => ({
+          name,
+          idIssue,
+          category,
+          statusIssue,
+          summary,
+          dayTime,
+          status
+        })
+      );
+      return { ...state, issuesResolved };
+    case myViewActionTypes.FETCH_RESOLVED_ISSUES_EMPTY:
+      return { ...state, issuesResolved: [] };
+    case myViewActionTypes.FETCH_RESOLVED_ISSUES_ERROR:
+      message.error("Sorry, failed loading resolved issues.");
+      return state;
 
-    case myViewActionTypes.FETCH_LAST30DAYS_ISSUES:
+    case myViewActionTypes.FETCH_LAST30DAYS_ISSUES_SUCCESS:
       const {
-        issues: { status: last30DaysStatus, data: last30DaysData }
+        issues: { Last30days }
       } = action;
-      switch (last30DaysStatus) {
-        case 0:
-          const { Last30days } = last30DaysData;
-          const issuesLast30Days = Last30days.map(
-            ({
-              name,
-              idIssue,
-              category,
-              statusIssue,
-              summary,
-              dayTime,
-              status
-            }) => ({
-              name,
-              idIssue,
-              category,
-              statusIssue,
-              summary,
-              dayTime,
-              status
-            })
-          );
-          return { ...state, issuesLast30Days };
-        case 404:
-          return { ...state, issuesLast30days: [] };
-        default:
-          message.error("Sorry, failed loading last 30 days issues.");
-          return state;
-      }
+      const issuesLast30Days = Last30days.map(
+        ({
+          name,
+          idIssue,
+          category,
+          statusIssue,
+          summary,
+          dayTime,
+          status
+        }) => ({
+          name,
+          idIssue,
+          category,
+          statusIssue,
+          summary,
+          dayTime,
+          status
+        })
+      );
+      return { ...state, issuesLast30Days };
+    case myViewActionTypes.FETCH_LAST30DAYS_ISSUES_EMPTY:
+      return { ...state, issuesLast30Days: [] };
+    case myViewActionTypes.FETCH_LAST30DAYS_ISSUES_ERROR:
+      message.error("Sorry, failed loading last 30 days issues.");
+      return state;
 
-    case myViewActionTypes.FETCH_TIMELINE:
+    case myViewActionTypes.FETCH_TIMELINE_SUCCESS:
       const {
-        timeLine: { status: timeLineStatus, data: timeLineData }
+        timeLine: { timeLine: _timeLine }
       } = action;
-      switch (timeLineStatus) {
-        case 0:
-          const { timeLine: _timeLine } = timeLineData;
-          const timeLine = _timeLine.map(
-            ({ id, userId, username, idIssue, dayTime, status }) => ({
-              id,
-              userId,
-              username,
-              idIssue,
-              dayTime,
-              status
-            })
-          );
-          return { ...state, timeLine };
-        case 404:
-          return { ...state, timeLine: [] };
-        default:
-          message.error("Sorry, failed loading timeline.");
-          return state;
-      }
+      const timeLine = _timeLine.map(
+        ({ id, userId, username, idIssue, dayTime, status }) => ({
+          id,
+          userId,
+          username,
+          idIssue,
+          dayTime,
+          status
+        })
+      );
+      return { ...state, timeLine };
+    case myViewActionTypes.FETCH_TIMELINE_EMPTY:
+      return { ...state, timeLine: [] };
+    case myViewActionTypes.FETCH_TIMELINE_ERROR:
+      message.error("Sorry, failed loading timeline.");
+      return state;
 
     default:
       return state;
