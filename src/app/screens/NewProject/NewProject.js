@@ -90,7 +90,6 @@ const NewProject = props => {
         </FormItem>
         <FormItem {...formItemLayout} label="Manager">
           <Select
-            mode="multiple"
             defaultValue={[]}
             onChange={value => {
               onSelectChange("manager", value);
@@ -101,7 +100,6 @@ const NewProject = props => {
         </FormItem>
         <FormItem {...formItemLayout} label="Project manager">
           <Select
-            mode="multiple"
             defaultValue={[]}
             onChange={value => {
               onSelectChange("project_manager", value);
@@ -112,7 +110,6 @@ const NewProject = props => {
         </FormItem>
         <FormItem {...formItemLayout} label="Project leader">
           <Select
-            mode="multiple"
             defaultValue={[]}
             onChange={value => {
               onSelectChange("project_leader", value);
@@ -145,7 +142,7 @@ const NewProject = props => {
               onSelectChange("programming_language", value);
             }}
           >
-            <Option value="C/C+++">C/C+++</Option>
+            <Option value="C/C++">C/C++</Option>
             <Option value="C#">C#</Option>
             <Option value="Golang">Golang</Option>
             <Option value="Haskell">Haskell</Option>
