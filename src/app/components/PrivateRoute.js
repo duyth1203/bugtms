@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import authHelper from "../../../utils/authHelper";
+import authHelper from "../../utils/authHelper";
 
 const PrivateRoute = ({ component: Comp, ...rest }) => {
   return (
@@ -8,7 +8,7 @@ const PrivateRoute = ({ component: Comp, ...rest }) => {
       {...rest}
       render={props =>
         authHelper.checkAuth() ? (
-          <Comp {...props} />
+          <Comp {...props} onReload={rest.onReload} />
         ) : (
           <Redirect
             to={{ pathname: "/login", state: { from: props.location } }}

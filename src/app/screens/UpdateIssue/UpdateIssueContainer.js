@@ -7,6 +7,12 @@ import UpdateIssue from "./UpdateIssue";
 import * as reportIssueActions from "../../../redux/actions/reportIssueActions";
 
 class UpdateIssueContainer extends Component {
+  constructor() {
+    super();
+    this.summaryRef = React.createRef();
+    this.descriptionRef = React.createRef();
+  }
+
   componentDidMount = () => {
     if (this.props.location.state === undefined) {
       message.warning("Sorry, failed passing issue details.");
@@ -38,9 +44,9 @@ class UpdateIssueContainer extends Component {
     if (category === "") category = this.props.location.state.category || "";
     if (statusIssue === "")
       statusIssue = this.props.location.state.statusIssue || "";
-    if (summary === "") summary = this.props.location.state.summary || "";
+    if (summary === "") summary = this.summaryRef.current.value || "";
     if (description === "")
-      description = this.props.location.state.description || "";
+      description = this.descriptionRef.current.value || "";
     if (severity === "") severity = this.props.location.state.severity || "";
     if (priority === "") priority = this.props.location.state.priority || "";
     if (assign_to === "") assign_to = this.props.location.state.assign_to || "";
@@ -90,6 +96,8 @@ class UpdateIssueContainer extends Component {
       <UpdateIssue
         {...this.props.location.state}
         users={this.props.users}
+        summaryRef={this.summaryRef}
+        descriptionRef={this.descriptionRef}
         onSubmit={this.handleSubmit}
         onChange={this.handleChange}
       />

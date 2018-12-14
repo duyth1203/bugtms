@@ -12,7 +12,7 @@ export default function Rediretor(props) {
   const to =
     (props.location !== undefined &&
       props.location.state !== undefined &&
-      props.location.state.to !== undefined) ||
+      props.location.state.to) ||
     props.to;
   return <Redirect to={to ? to : "/saveTonyStark"} />;
 }

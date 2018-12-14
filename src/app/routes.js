@@ -1,7 +1,7 @@
 import React from "react";
 import MyProjectsContainer from "./screens/MyProjects/MyProjectsContainer";
 import MyViewContainer from "./screens/MyView/MyViewContainer";
-import NotFound from "./screens/NotFound/NotFound";
+// import NotFound from "./screens/NotFound/NotFound";
 import ProjectSelectorContainer from "./screens/ProjectSelector/ProjectSelectorContainer";
 import ReportIssueContainer from "./screens/ReportIssue/ReportIssueContainer";
 import UpdateIssueContainer from "./screens/UpdateIssue/UpdateIssueContainer";
@@ -98,13 +98,13 @@ const AppRoutes = [
     exact: true,
     isPrivate: false,
     component: props => <Rediretor {...props} />
-  },
-  {
-    path: "",
-    exact: false,
-    isPrivate: false,
-    component: () => <NotFound />
   }
+  // {
+  //   path: "",
+  //   exact: false,
+  //   isPrivate: false,
+  //   component: () => <NotFound />
+  // }
 ];
 
 export default AppRoutes;
