@@ -44,10 +44,12 @@ class ProjectSelectorContainer extends Component {
   };
 
   handleSubmit = () => {
-    const { selectedProject, markAsDefault } = this.state;
-    if (selectedProject && markAsDefault)
-      setCookie("defaultProjectId", selectedProject);
-    this.props.onRedirect(selectedProject);
+    const { selectedProject: projectId, markAsDefault } = this.state;
+    if (projectId && markAsDefault) setCookie("defaultProjectId", projectId);
+    this.props.history.push({
+      pathname: this.props.location.state.from,
+      state: { projectId }
+    });
   };
 
   render() {

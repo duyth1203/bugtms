@@ -46,26 +46,23 @@ class NewProjectContainer extends Component {
         "Could not identify user, please log out and log in again."
       );
 
-    this.props.postProjectRequest(
-      {
-        name,
-        manager,
-        project_manager,
-        project_leader,
-        members: _members,
-        deadline: moment(deadline).format("YYYY/MM/DD"),
-        programming_language,
-        db,
-        platform,
-        type,
-        professional_business,
-        web_server,
-        managerment,
-        application_server,
-        system_networking
-      },
-      () => this.props.onReload()
-    );
+    this.props.postProjectRequest({
+      name,
+      manager,
+      project_manager,
+      project_leader,
+      members: _members,
+      deadline: moment(deadline).format("YYYY/MM/DD"),
+      programming_language,
+      db,
+      platform,
+      type,
+      professional_business,
+      web_server,
+      managerment,
+      application_server,
+      system_networking
+    });
   };
 
   render() {

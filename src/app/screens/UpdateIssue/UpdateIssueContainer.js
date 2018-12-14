@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getCookie } from "tiny-cookie";
 import message from "antd/lib/message";
@@ -8,7 +8,10 @@ import * as reportIssueActions from "../../../redux/actions/reportIssueActions";
 
 class UpdateIssueContainer extends Component {
   componentDidMount = () => {
-    if (this.props.location.state === undefined) return;
+    if (this.props.location.state === undefined) {
+      message.warning("Sorry, failed passing issue details.");
+      return this.history.goBack();
+    }
     const projectId = this.props.location.state.project_id;
     this.props.fetchUsersRequest(projectId);
   };
@@ -19,10 +22,7 @@ class UpdateIssueContainer extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const {
-      id: issueId,
-      project_id: defaultProjectId
-    } = this.props.location.state;
+    const { id: issueId, project_id } = this.props.location.state;
     let {
       category,
       statusIssue,
@@ -34,40 +34,62 @@ class UpdateIssueContainer extends Component {
       reporter,
       resolution
     } = this.props;
-
-    if (reporter.length < 1)
+    // if any of details did not raise any onChange
+    if (category === "") category = this.props.location.state.category || "";
+    if (statusIssue === "")
+      statusIssue = this.props.location.state.statusIssue || "";
+    if (summary === "") summary = this.props.location.state.summary || "";
+    if (description === "")
+      description = this.props.location.state.description || "";
+    if (severity === "") severity = this.props.location.state.severity || "";
+    if (priority === "") priority = this.props.location.state.priority || "";
+    if (assign_to === "") assign_to = this.props.location.state.assign_to || "";
+    if (reporter === "")
       reporter =
-        (getCookie("user") && JSON.parse(getCookie("user")).username) || "";
-    if (reporter.length < 1)
-      return message.warning("Please choose a reporter.");
+        JSON.stringify(this.props.location.state.reporter) ||
+        (getCookie("user") && JSON.parse(getCookie("user")).username) ||
+        "";
+    if (resolution === "")
+      resolution = JSON.stringify(this.props.location.state.resolution) || "";
 
-    if (summary.length < 1 || description.length < 1)
+    if (reporter === "")
+      return message.warning("Session maybe expired. Please log in again.");
+
+    if (summary === "" || description === "")
       return message.warning("Please check if any required field was empty.");
 
-    if (!defaultProjectId || defaultProjectId === -1)
+    if (!project_id || project_id === -1)
       return message.error(
         "Sorry, no project selected so failed reporting the issue."
       );
 
-    this.props.updateIssueRequest({
-      issueId,
-      defaultProjectId,
-      category,
-      statusIssue,
-      summary,
-      description,
-      severity,
-      priority,
-      assign_to,
-      reporter,
-      resolution
-    });
+    this.props.updateIssueRequest(
+      {
+        issueId,
+        project_id,
+        category,
+        statusIssue,
+        summary,
+        description,
+        severity,
+        priority,
+        assign_to,
+        reporter,
+        resolution
+      },
+      () =>
+        setTimeout(
+          () => this.props.history.push(`/view-issues/${issueId}`),
+          500
+        )
+    );
   };
 
   render() {
     return this.props.location.state !== undefined ? (
       <UpdateIssue
         {...this.props.location.state}
+        users={this.props.users}
         onSubmit={this.handleSubmit}
         onChange={this.handleChange}
       />
@@ -82,15 +104,17 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateIssueRequest: inputs =>
-    dispatch(reportIssueActions.updateIssueRequest(inputs)),
+  updateIssueRequest: (inputs, cb) =>
+    dispatch(reportIssueActions.updateIssueRequest(inputs, cb)),
   fetchUsersRequest: projectId =>
     dispatch(reportIssueActions.fetchUsersRequest(projectId)),
   handleFormInputChange: e =>
     dispatch(reportIssueActions.handleFormInputChange(e))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UpdateIssueContainer);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(UpdateIssueContainer)
+);

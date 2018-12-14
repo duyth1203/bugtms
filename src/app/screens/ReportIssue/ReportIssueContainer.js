@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { getCookie } from "tiny-cookie";
 import message from "antd/lib/message";
 import ReportIssue from "./ReportIssue";
@@ -8,11 +9,18 @@ import * as reportIssueActions from "../../../redux/actions/reportIssueActions";
 class ReportIssueContainer extends Component {
   componentDidMount = () => {
     const projectId =
-      (+this.props.selectedProject !== -1 && this.props.selectedProject) ||
+      (this.props.location !== undefined &&
+        this.props.location.state !== undefined &&
+        +this.props.location.state.projectId) ||
       +getCookie("defaultProjectId") ||
       -1;
+
     if (projectId === -1)
-      return message.error("Sorry, failed identifying project.");
+      return this.props.history.push({
+        pathname: "/select-project",
+        state: { from: this.props.location.pathname }
+      });
+
     this.props.fetchUsersRequest(projectId);
   };
 
@@ -20,10 +28,12 @@ class ReportIssueContainer extends Component {
     this.props.handleFormInputChange(e);
   };
 
-  handleSubmit = (e, issueId) => {
+  handleSubmit = e => {
     e.preventDefault();
     const defaultProjectId =
-        (+this.props.selectedProject !== -1 && this.props.selectedProject) ||
+        (this.props.location !== undefined &&
+          this.props.location.state !== undefined &&
+          +this.props.location.state.projectId) ||
         +getCookie("defaultProjectId") ||
         -1,
       userId = getCookie("user") && JSON.parse(getCookie("user")).id;
@@ -60,7 +70,6 @@ class ReportIssueContainer extends Component {
       );
 
     this.props.postIssueRequest({
-      issueId,
       userId,
       defaultProjectId,
       category,
@@ -106,7 +115,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(reportIssueActions.handleFormInputChange(e))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ReportIssueContainer);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ReportIssueContainer)
+);

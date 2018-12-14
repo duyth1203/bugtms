@@ -1,6 +1,6 @@
 import * as newProjectActionTypes from "../constants/newProjectActionTypes";
 
-export const postProjectRequest = (inputs, cb) => dispatch => {
+export const postProjectRequest = inputs => dispatch => {
   fetch("http://localhost:3001/projects", {
     method: "POST",
     headers: {
@@ -14,7 +14,6 @@ export const postProjectRequest = (inputs, cb) => dispatch => {
       const { status } = json;
       switch (status) {
         case 0:
-          cb && cb();
           dispatch({ type: newProjectActionTypes.POST_PROJECT_SUCCESS });
           break;
         // 404: failed

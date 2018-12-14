@@ -5,9 +5,11 @@ import * as commentViewActions from "../../../../../redux/actions/commentViewAct
 
 class CommentViewContainer extends Component {
   fetchComments = () => {
-    const issueId = this.props.location.pathname.substr(
-      this.props.location.pathname.lastIndexOf("/") + 1
-    );
+    const issueId =
+      this.props.issueId ||
+      this.props.location.pathname.substr(
+        this.props.location.pathname.lastIndexOf("/") + 1
+      );
     return this.props.fetchCommentsRequest(issueId);
   };
 

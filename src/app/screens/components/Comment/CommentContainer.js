@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import CommentViewContainer from "./CommentView/CommentViewContainer";
 import CommentPostContainer from "./CommentPost/CommentPostContainer";
 
@@ -29,4 +30,4 @@ class CommentContainer extends Component {
   }
 }
 
-export default CommentContainer;
+export default withRouter(CommentContainer);

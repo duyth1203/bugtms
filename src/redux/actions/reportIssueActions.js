@@ -41,9 +41,7 @@ export const postIssueRequest = inputs => dispatch => {
   })
     .then(resp => resp.json())
     .then(json => {
-      const {
-        result: { status }
-      } = json;
+      const { status } = json;
       switch (status) {
         case 0:
           dispatch({ type: reportIssueActionTypes.POST_ISSUE_SUCCESS });
@@ -53,15 +51,16 @@ export const postIssueRequest = inputs => dispatch => {
           break;
       }
     })
-    .catch(error =>
-      dispatch({ type: reportIssueActionTypes.POST_ISSUE_ERROR, error })
-    );
+    .catch(error => {
+      console.log(error);
+      dispatch({ type: reportIssueActionTypes.POST_ISSUE_ERROR, error });
+    });
 };
 
-export const updateIssueRequest = inputs => dispatch => {
+export const updateIssueRequest = (inputs, cb) => dispatch => {
   const {
     issueId,
-    defaultProjectId,
+    project_id,
     userId,
     category,
     statusIssue,
@@ -75,15 +74,14 @@ export const updateIssueRequest = inputs => dispatch => {
   } = inputs;
 
   fetch(`http://localhost:3001/issues/${issueId}`, {
-    method: "POST",
+    method: "PUT",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
       user_Id: userId,
-      project_id: defaultProjectId,
-      // attachment,
+      project_id,
       category,
       statusIssue,
       last_updated: moment().format("YYYYMMDD") + "000000",
@@ -99,11 +97,10 @@ export const updateIssueRequest = inputs => dispatch => {
   })
     .then(resp => resp.json())
     .then(json => {
-      const {
-        result: { status }
-      } = json;
+      const { status } = json;
       switch (status) {
         case 0:
+          cb && cb();
           dispatch({ type: reportIssueActionTypes.UPDATE_ISSUE_SUCCESS });
           break;
         default:

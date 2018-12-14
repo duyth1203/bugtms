@@ -79,11 +79,9 @@ const UpdateIssue = props => {
   return (
     <div className="app-content">
       <h1>Update Issue Details</h1>
-
-      <Link to={`/view-issues/${id}`}>
-        <span>&larr; &nbsp; view issue details</span>
-      </Link>
-      <br />
+      <p>
+        <Link to={`/view-issues/${id}`}>&larr; issue {id} </Link> | {summary}
+      </p>
 
       <Form onSubmit={onSubmit}>
         <FormItem {...formItemLayout} label="Category">
@@ -117,7 +115,7 @@ const UpdateIssue = props => {
         </FormItem>
         <FormItem {...formItemLayout} label="Summary *">
           <Input
-            value={summary || ""}
+            defaultValue={summary || ""}
             placeholder="Some brief words describing the issue"
             onChange={onChange}
             name="summary"
@@ -125,7 +123,7 @@ const UpdateIssue = props => {
         </FormItem>
         <FormItem {...formItemLayout} label="Description *">
           <Input.TextArea
-            value={description || ""}
+            defaultValue={description || ""}
             rows={4}
             placeholder="Details on what is going on..."
             onChange={onChange}
