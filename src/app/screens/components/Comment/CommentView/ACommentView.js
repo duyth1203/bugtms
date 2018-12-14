@@ -35,10 +35,6 @@ const ACommentView = props => {
                 <Icon type="delete" />
               </Button>
             </Popconfirm>
-            <span>&nbsp; </span>
-            <Button size="small" className="comment__action-btn">
-              <Icon type="edit" />
-            </Button>
           </div>
         )}
       </div>

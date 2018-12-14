@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "antd": "^3.9.2",
-    "cookie_js": "^1.2.2",
     "jwt-decode": "^2.2.0",
     "moment": "^2.22.2",
     "react": "^16.5.2",

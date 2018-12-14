@@ -2,15 +2,17 @@ import React from "react";
 import MyProjectsContainer from "./screens/MyProjects/MyProjectsContainer";
 import MyViewContainer from "./screens/MyView/MyViewContainer";
 import NotFound from "./screens/NotFound/NotFound";
+import ProjectSelectorContainer from "./screens/ProjectSelector/ProjectSelectorContainer";
 import ReportIssueContainer from "./screens/ReportIssue/ReportIssueContainer";
+import UpdateIssueContainer from "./screens/UpdateIssue/UpdateIssueContainer";
 import ViewIssuesContainer from "./screens/ViewIssues/ViewIssuesContainer";
 import ViewIssueDetailsContainer from "./screens/ViewIssueDetails/ViewIssueDetailsContainer";
-import CommentContainer from "./screens/components/Comment/CommentContainer";
-import ProjectSelectRedirector from "./screens/components/ProjectSelectRedirector";
-import LogOut from "./screens/components/LogOut";
-import LoginContainer from "./screens/Login/LoginContainer";
 import NewProjectContainer from "./screens/NewProject/NewProjectContainer";
+import LoginContainer from "./screens/Login/LoginContainer";
+import CommentContainer from "./screens/components/Comment/CommentContainer";
 import ProjectSelectRedirect from "./screens/components/ProjectSelectRedirect";
+import Rediretor from "./components/Rediretor";
+import authHelper from "../utils/authHelper";
 
 const AppRoutes = [
   {
@@ -49,14 +51,22 @@ const AppRoutes = [
     )
   },
   {
+    path: "/select-project",
+    exact: true,
+    isPrivate: true,
+    component: props => <ProjectSelectorContainer {...props} />
+  },
+  {
     path: "/report-issue",
     exact: true,
     isPrivate: true,
-    component: props => (
-      <ProjectSelectRedirector>
-        <ReportIssueContainer {...props} />
-      </ProjectSelectRedirector>
-    )
+    component: props => <ReportIssueContainer {...props} />
+  },
+  {
+    path: "/update-issue",
+    exact: true,
+    isPrivate: true,
+    component: props => <UpdateIssueContainer {...props} />
   },
   {
     path: "/my-projects/:id",
@@ -74,13 +84,20 @@ const AppRoutes = [
     path: "/log-out",
     exact: false,
     isPrivate: false,
-    component: () => <LogOut />
+    component: () => <Rediretor to="/" cb={authHelper.logout} />
   },
   {
     path: "/login",
     exact: true,
     isPrivate: false,
     component: props => <LoginContainer {...props} />
+  },
+
+  {
+    path: "/redirect",
+    exact: true,
+    isPrivate: false,
+    component: props => <Rediretor {...props} />
   },
   {
     path: "",

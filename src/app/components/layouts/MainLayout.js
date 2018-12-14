@@ -3,13 +3,11 @@ import Layout, { Content } from "antd/lib/layout";
 import AppFooter from "./compontents/Footer/Footer";
 import AppHeaderContainer from "./compontents/Header/HeaderContainer";
 import AppSider from "./compontents/Sider/Sider";
-import ViewIssueDetailsContainer from "../../screens/ViewIssueDetails/ViewIssueDetailsContainer";
 import authHelper from "../../../utils/authHelper";
 
 class MainLayout extends Component {
   state = {
     siderExpand: true,
-    redirectToViewIssueDetail: null,
     willReload: false
   };
 
@@ -17,23 +15,15 @@ class MainLayout extends Component {
     this.setState({ siderExpand: !this.state.siderExpand });
   };
 
-  handleRedirectToViewIssueDetails = issueId => {
-    this.setState(
-      {
-        redirectToViewIssueDetail: issueId
-      },
-      this.setState({ redirectToViewIssueDetail: null })
-    );
-  };
-
-  handleReload = () => {
+  handleReload = cb => {
+    cb && cb();
     this.setState({
       willReload: !this.state.willReload
     });
   };
 
   render() {
-    const { siderExpand, redirectToViewIssueDetail } = this.state;
+    const { siderExpand } = this.state;
     const { children } = this.props;
     const childrenWithProp = Array.isArray(children)
       ? React.Children.map(children, child =>
@@ -52,9 +42,6 @@ class MainLayout extends Component {
             <AppSider
               siderExpand={siderExpand}
               onSiderToggle={this.handleSiderToggle}
-              onRedirectToViewIssueDetails={
-                this.handleRedirectToViewIssueDetails
-              }
             />
           )}
           <Layout>
@@ -63,16 +50,13 @@ class MainLayout extends Component {
                 siderExpand={siderExpand}
                 onIssueSearch={this.handleIssueSearch}
                 onSiderToggle={this.handleSiderToggle}
+                onRedirectToViewIssueDetails={
+                  this.handleRedirectToViewIssueDetails
+                }
               />
             )}
             <Content style={{ backgroundColor: "#fff", padding: "21px" }}>
-              {redirectToViewIssueDetail ? (
-                <ViewIssueDetailsContainer
-                  issueId={redirectToViewIssueDetail}
-                />
-              ) : (
-                childrenWithProp
-              )}
+              {childrenWithProp}
             </Content>
             <AppFooter />
           </Layout>
