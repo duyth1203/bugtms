@@ -7,24 +7,25 @@ import authHelper from "../../../utils/authHelper";
 
 class MainLayout extends Component {
   state = {
-    siderExpand: true,
-    willReload: false
+    siderExpand: true
   };
 
   handleSiderToggle = () => {
     this.setState({ siderExpand: !this.state.siderExpand });
   };
 
-  handleReload = cb => {
-    cb && cb();
-    this.setState({
-      willReload: !this.state.willReload
-    });
+  handleReload = () => {
+    window.location.reload();
   };
 
   render() {
     const { siderExpand } = this.state;
-    const { children } = this.props;
+    const {
+      children: {
+        props: { children }
+      }
+    } = this.props;
+
     const childrenWithProp = Array.isArray(children)
       ? React.Children.map(children, child =>
           React.cloneElement(child, {
@@ -50,9 +51,6 @@ class MainLayout extends Component {
                 siderExpand={siderExpand}
                 onIssueSearch={this.handleIssueSearch}
                 onSiderToggle={this.handleSiderToggle}
-                onRedirectToViewIssueDetails={
-                  this.handleRedirectToViewIssueDetails
-                }
               />
             )}
             <Content style={{ backgroundColor: "#fff", padding: "21px" }}>

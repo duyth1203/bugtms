@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import MainLayout from "./components/layouts/MainLayout";
 import AppRoutes from "./routes";
-import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import PrivateRoute from "./components/PrivateRoute";
 
 class App extends Component {
   AppScreens = AppRoutes.map(

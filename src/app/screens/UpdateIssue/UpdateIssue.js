@@ -119,6 +119,7 @@ const UpdateIssue = props => {
             placeholder="Some brief words describing the issue"
             onChange={onChange}
             name="summary"
+            ref={props.summaryRef}
           />
         </FormItem>
         <FormItem {...formItemLayout} label="Description *">
@@ -128,6 +129,7 @@ const UpdateIssue = props => {
             placeholder="Details on what is going on..."
             onChange={onChange}
             name="description"
+            ref={props.descriptionRef}
           />
         </FormItem>
         <FormItem {...formItemLayout} label="Severity">

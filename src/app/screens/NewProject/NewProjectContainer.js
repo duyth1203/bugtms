@@ -46,27 +46,31 @@ class NewProjectContainer extends Component {
         "Could not identify user, please log out and log in again."
       );
 
-    this.props.postProjectRequest({
-      name,
-      manager,
-      project_manager,
-      project_leader,
-      members: _members,
-      deadline: moment(deadline).format("YYYY/MM/DD"),
-      programming_language,
-      db,
-      platform,
-      type,
-      professional_business,
-      web_server,
-      managerment,
-      application_server,
-      system_networking
-    });
+    this.props.postProjectRequest(
+      {
+        name,
+        manager,
+        project_manager,
+        project_leader,
+        members: _members,
+        deadline: moment(deadline).format("YYYY/MM/DD"),
+        programming_language,
+        db,
+        platform,
+        type,
+        professional_business,
+        web_server,
+        managerment,
+        application_server,
+        system_networking
+      },
+      () => setTimeout(() => this.props.onReload(), 500)
+    );
   };
 
   render() {
     const { users } = this.props;
+
     return (
       <NewProject
         users={users}
@@ -80,8 +84,8 @@ class NewProjectContainer extends Component {
 const mapStateToProps = state => ({ ...state.newProject });
 
 const mapDispatchToProps = dispatch => ({
-  postProjectRequest: inputs =>
-    dispatch(newProjectActions.postProjectRequest(inputs)),
+  postProjectRequest: (inputs, cb) =>
+    dispatch(newProjectActions.postProjectRequest(inputs, cb)),
   handleFormInputChange: e =>
     dispatch(newProjectActions.handleFormInputChange(e)),
   fetchUsersRequest: () => dispatch(newProjectActions.fetchUsersRequest())
