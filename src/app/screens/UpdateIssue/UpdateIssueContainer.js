@@ -40,13 +40,15 @@ class UpdateIssueContainer extends Component {
       reporter,
       resolution
     } = this.props;
+
     // if any of details did not raise any onChange
     if (category === "") category = this.props.location.state.category || "";
     if (statusIssue === "")
       statusIssue = this.props.location.state.statusIssue || "";
-    if (summary === "") summary = this.summaryRef.current.value || "";
+    if (summary === "")
+      summary = this.summaryRef.current.props.defaultVale || "";
     if (description === "")
-      description = this.descriptionRef.current.value || "";
+      description = this.descriptionRef.current.props.defaultVale || "";
     if (severity === "") severity = this.props.location.state.severity || "";
     if (priority === "") priority = this.props.location.state.priority || "";
     if (assign_to === "") assign_to = this.props.location.state.assign_to || "";

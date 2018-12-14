@@ -1,5 +1,6 @@
 import React from "react";
 import { getCookie } from "tiny-cookie";
+import moment from "moment";
 import Table from "antd/lib/table";
 import Button from "antd/lib/button";
 import Icon from "antd/lib/icon";
@@ -22,7 +23,7 @@ const ACommentView = props => {
       <div className="table__comment-title">
         <div className="comment__title">
           <span className="comment__title-index">#{id}</span> on{" "}
-          {date_submitted}
+          {moment(new Date(date_submitted)).format("YYYY-MM-DD")}
         </div>
         {userId === _userId && (
           <div className="comment__action">

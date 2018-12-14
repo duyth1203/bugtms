@@ -66,16 +66,6 @@ const ReportIssue = props => {
   return (
     <div className="app-content">
       <h1>Report Issue Details</h1>
-
-      <div>
-        <Button
-          size="small"
-          onClick={props.onChooseProject}
-          className="section__report-btn"
-        >
-          &larr; &nbsp; another project
-        </Button>
-      </div>
       <br />
 
       <Form onSubmit={onSubmit}>

@@ -1,7 +1,6 @@
 import React from "react";
 import MyProjectsContainer from "./screens/MyProjects/MyProjectsContainer";
 import MyViewContainer from "./screens/MyView/MyViewContainer";
-// import NotFound from "./screens/NotFound/NotFound";
 import ProjectSelectorContainer from "./screens/ProjectSelector/ProjectSelectorContainer";
 import ReportIssueContainer from "./screens/ReportIssue/ReportIssueContainer";
 import UpdateIssueContainer from "./screens/UpdateIssue/UpdateIssueContainer";
