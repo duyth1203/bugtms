@@ -85,7 +85,7 @@ const NewProject = props => {
       <h1>Add new project</h1>
 
       <Form onSubmit={onSubmit}>
-        <FormItem {...formItemLayout} label="Project name">
+        <FormItem {...formItemLayout} label="Project name *">
           <Input placeholder="#saveStark" onChange={onChange} name="name" />
         </FormItem>
         <FormItem {...formItemLayout} label="Manager">
@@ -118,7 +118,7 @@ const NewProject = props => {
             {userOpts}
           </Select>
         </FormItem>
-        <FormItem {...formItemLayout} label="Members">
+        <FormItem {...formItemLayout} label="Members *">
           <Select
             mode="multiple"
             defaultValue={[userId]}

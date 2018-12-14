@@ -17,9 +17,7 @@ export const postCommentRequest = (inputs, cb) => dispatch => {
     .then(resp => resp.json())
     .then(json => {
       cb && cb();
-      const {
-        result: { status }
-      } = json;
+      const { status } = json;
       if (status !== 404)
         dispatch({
           type: commentPostActionTypes.POST_COMMENT_SUCCESS

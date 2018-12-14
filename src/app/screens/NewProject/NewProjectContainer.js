@@ -41,10 +41,11 @@ class NewProjectContainer extends Component {
     if (!members || members.length < 1) {
       const userId = getCookie("user") && JSON.parse(getCookie("user")).id;
       if (userId) _members.unshift(userId);
-    } else
-      return message.warning(
-        "Could not identify user, please log out and log in again."
-      );
+      else
+        return message.warning(
+          "Could not identify user, please log out and log in again."
+        );
+    }
 
     this.props.postProjectRequest(
       {

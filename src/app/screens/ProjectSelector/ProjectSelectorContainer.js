@@ -12,6 +12,12 @@ class ProjectSelectorContainer extends Component {
   };
 
   componentDidMount() {
+    if (+getCookie("defaultProjectId") !== -1)
+      return this.props.history.push({
+        pathname: `/report-issue`,
+        projectId: getCookie("defaultProjectId")
+      });
+
     const userId = getCookie("user") && JSON.parse(getCookie("user")).id;
     if (userId) {
       fetch(`http://localhost:3001/myview/getProjectByUser/${userId}`)
@@ -47,7 +53,7 @@ class ProjectSelectorContainer extends Component {
     const { selectedProject: projectId, markAsDefault } = this.state;
     if (projectId && markAsDefault) setCookie("defaultProjectId", projectId);
     this.props.history.push({
-      pathname: this.props.location.state.from,
+      pathname: `/report-issue/`,
       state: { projectId }
     });
   };
